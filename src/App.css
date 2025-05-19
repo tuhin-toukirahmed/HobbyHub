@@ -1,1 +1,8 @@
- 
+html.light {
+  background-color: #f9fafb;
+  color: #1f2937;
+}
+html.dark {
+  background-color: #111827;
+  color: #d1d5db;
+}

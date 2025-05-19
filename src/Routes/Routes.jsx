@@ -5,11 +5,16 @@ import Mygroups from "./../Pages/Mygroups";
 import Creategroup from "./../Pages/Creategroup";
 import UpdateGroup from "./../Pages/UpdateGroup";
 import Layout from "./../Layout";
+import ErrorPage from "./../Pages/ErrorPage";
+import Profile from "../Pages/Profile";
+import Settings from "../Pages/Settings";
+import DashBoard from "../Pages/DashBoard";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
@@ -30,6 +35,18 @@ const router = createBrowserRouter([
       {
         path: "/update-group",
         element: <UpdateGroup />,
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
+      },
+      {
+        path: "/settings",
+        element: <Settings />,
+      },
+      {
+        path: "/dashboard",
+        element: <DashBoard />,
       },
     ],
   },
