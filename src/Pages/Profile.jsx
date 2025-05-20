@@ -6,6 +6,7 @@ const Profile = () => {
   const { user } = useAuth();
   console.log(user);
   const [emailSent, setEmailSent] = useState(user?.emailVerified || false);
+  const [activeTab, setActiveTab] = useState("about");
 
   const handleVerify = async () => {
     if (user && !user.emailVerified) {
@@ -17,6 +18,77 @@ const Profile = () => {
       }
     }
   };
+
+  // Personal Details content
+  const personalDetails = (
+    <div className="mb-6">
+      <h2 className="text-lg font-semibold mb-2">PERSONAL DETAILS</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700 dark:text-gray-300">
+        <div>
+          <div>
+            <span className="font-semibold">Full Name:</span>{" "}
+            {user?.displayName || "No Name"}
+          </div>
+          <div>
+            <span className="font-semibold">Birth Date:</span> 19 May 1990
+          </div>
+          <div>
+            <span className="font-semibold">Gender:</span> Male
+          </div>
+          <div>
+            <span className="font-semibold">Preferred Language:</span> English
+          </div>
+        </div>
+        <div className="flex flex-col items-center">
+          <img
+            src={
+              user?.photoURL ||
+              "https://ui-avatars.com/api/?name=" +
+                (user?.displayName || "User")
+            }
+            alt="Profile"
+            className="w-32 h-32 rounded-full border-4 border-gray-200 mb-2 object-cover"
+          />
+        </div>
+      </div>
+    </div>
+  );
+
+  // Contact content
+  const contactDetails = (
+    <div className="mb-6">
+      <h2 className="text-lg font-semibold mb-2">CONTACT</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700 dark:text-gray-300">
+        <div>
+          <div>
+            <span className="font-semibold">Email:</span>{" "}
+            {user?.email || "No Email"}
+          </div>
+          <div>
+            <span className="font-semibold">Phone Number:</span> (201) 555-5555
+          </div>
+          <div>
+            <span className="font-semibold">Address:</span> Dhaka, Dhaka BGD
+          </div>
+        </div>
+        <div>
+          <div className="font-semibold mb-1">Emergency Contact</div>
+          <div>
+            <span className="font-semibold">Name:</span>{" "}
+          </div>
+          <div>
+            <span className="font-semibold">Phone Number:</span> (201) 555-5555
+          </div>
+          <div>
+            <span className="font-semibold">Email:</span>{" "}
+          </div>
+          <div>
+            <span className="font-semibold">Notes:</span>{" "}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="flex flex-col md:flex-row gap-6 max-w-5xl mx-auto bg-light-section dark:bg-dark-surface p-6 rounded-lg shadow mt-8">
@@ -87,67 +159,97 @@ const Profile = () => {
         </div>
         <div className="border-b border-gray-200 dark:border-dark-border mb-4">
           <nav className="flex gap-6 text-sm">
-            <span className="text-orange-600 font-semibold border-b-2 border-orange-500 pb-2">
+            <button
+              className={`pb-2 font-semibold ${
+                activeTab === "about"
+                  ? "text-orange-600 border-b-2 border-orange-500"
+                  : "text-gray-500"
+              }`}
+              onClick={() => setActiveTab("about")}
+            >
               About
-            </span>
-            <span className="text-gray-500 pb-2">My Home</span>
-            <span className="text-gray-500 pb-2">
-              Photos{" "}
-              <span className="bg-blue-100 text-blue-600 rounded px-2">0</span>
-            </span>
-            <span className="text-gray-500 pb-2">
-              References{" "}
-              <span className="bg-blue-100 text-blue-600 rounded px-2">0</span>
-            </span>
-            <span className="text-gray-500 pb-2">
-              Friends{" "}
-              <span className="bg-blue-100 text-blue-600 rounded px-2">0</span>
-            </span>
-            <span className="text-gray-500 pb-2">
-              Favorites{" "}
-              <span className="bg-blue-100 text-blue-600 rounded px-2">0</span>
-            </span>
+            </button>
+            <button
+              className={`pb-2 font-semibold ${
+                activeTab === "groups"
+                  ? "text-orange-600 border-b-2 border-orange-500"
+                  : "text-gray-500"
+              }`}
+              onClick={() => setActiveTab("groups")}
+            >
+              My Groups
+            </button>
+            <button
+              className={`pb-2 font-semibold ${
+                activeTab === "personal"
+                  ? "text-orange-600 border-b-2 border-orange-500"
+                  : "text-gray-500"
+              }`}
+              onClick={() => setActiveTab("personal")}
+            >
+              Personal Details
+            </button>
+            <button
+              className={`pb-2 font-semibold ${
+                activeTab === "contact"
+                  ? "text-orange-600 border-b-2 border-orange-500"
+                  : "text-gray-500"
+              }`}
+              onClick={() => setActiveTab("contact")}
+            >
+              Contact
+            </button>
           </nav>
         </div>
-        {/* Overview Section */}
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold mb-2">OVERVIEW</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700 dark:text-gray-300">
-            <div>
-              <div>0 references</div>
-              <div>No languages listed</div>
-              <div>35, Male</div>
-              <div>
-                Member since 2025{" "}
-                <span className="bg-orange-100 text-orange-600 rounded px-2 ml-1">
-                  New Member
-                </span>
+        {/* Tab Content */}
+        {activeTab === "about" && (
+          <>
+            {/* Overview Section */}
+            <div className="mb-6">
+              <h2 className="text-lg font-semibold mb-2">OVERVIEW</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700 dark:text-gray-300">
+                <div>
+                  <div>0 references</div>
+                  <div>No languages listed</div>
+                  <div>35, Male</div>
+                  <div>
+                    Member since 2025{" "}
+                    <span className="bg-orange-100 text-orange-600 rounded px-2 ml-1">
+                      New Member
+                    </span>
+                  </div>
+                </div>
+                <div>
+                  <div>No occupation listed</div>
+                  <div>No education listed</div>
+                  <div>No hometown listed</div>
+                  <div>
+                    <a href="#" className="text-blue-600 hover:underline">
+                      Profile 5% complete
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
-            <div>
-              <div>No occupation listed</div>
-              <div>No education listed</div>
-              <div>No hometown listed</div>
-              <div>
-                <a href="#" className="text-blue-600 hover:underline">
-                  Profile 5% complete
+            {/* About Me Section */}
+            <div className="mb-4">
+              <h2 className="text-lg font-semibold mb-2">ABOUT ME</h2>
+              <div className="bg-gray-50 dark:bg-dark-bg p-4 rounded text-gray-500 text-sm">
+                Couchsurfers decide whom to meet based on profiles! Until you{" "}
+                <a href="#" className="text-blue-600 underline">
+                  fill out your profile
                 </a>
+                , people won’t know what to expect and why they should hang out
+                with you.
               </div>
             </div>
-          </div>
-        </div>
-        {/* About Me Section */}
-        <div className="mb-4">
-          <h2 className="text-lg font-semibold mb-2">ABOUT ME</h2>
-          <div className="bg-gray-50 dark:bg-dark-bg p-4 rounded text-gray-500 text-sm">
-            Couchsurfers decide whom to meet based on profiles! Until you{" "}
-            <a href="#" className="text-blue-600 underline">
-              fill out your profile
-            </a>
-            , people won’t know what to expect and why they should hang out with
-            you.
-          </div>
-        </div>
+          </>
+        )}
+        {activeTab === "groups" && (
+          <div className="mb-6">My Groups (to be updated)</div>
+        )}
+        {activeTab === "personal" && personalDetails}
+        {activeTab === "contact" && contactDetails}
       </div>
     </div>
   );
