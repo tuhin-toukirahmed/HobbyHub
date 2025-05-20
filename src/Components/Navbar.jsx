@@ -14,8 +14,8 @@ const Navbar = () => {
   };
 
   return (
-    <>
-      <div className="navbar bg-light-bg  shadow-sm   sm:max-w-xl md:max-w-full lg:max-w-screen-xl mx-auto">
+    <div className="relative bg-red-200">
+      <div className="navbar bg-light-bg shadow-sm sm:max-w-xl md:max-w-full lg:max-w-screen-xl mx-auto fixed left-1/2 top-0 z-1   transform -translate-x-1/2 w-full max-w-4xl">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -111,7 +111,7 @@ const Navbar = () => {
           </ul>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

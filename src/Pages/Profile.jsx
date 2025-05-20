@@ -26,7 +26,6 @@ const Profile = () => {
     }
   };
 
-  // Personal Details content
   const personalDetails = (
     <div className="mb-6">
       <h2 className="text-lg font-semibold mb-2">PERSONAL DETAILS</h2>
@@ -61,7 +60,6 @@ const Profile = () => {
     </div>
   );
 
-  // Contact content
   const contactDetails = (
     <div className="mb-6">
       <h2 className="text-lg font-semibold mb-2">CONTACT</h2>
@@ -143,10 +141,9 @@ const Profile = () => {
   return (
     <div ref={scrollRef} data-scroll-container>
       <div
-        className="flex flex-col md:flex-row gap-6 max-w-5xl mx-auto bg-light-section dark:bg-dark-surface p-6 rounded-lg shadow mt-8"
+        className="flex flex-col md:flex-row gap-6 max-w-5xl mx-auto bg-light-section dark:bg-dark-surface p-6 rounded-lg shadow mt-16"
         data-scroll-section
       >
-        {/* Left: Profile Image and Basic Info */}
         <div
           className="bg-white dark:bg-dark-bg rounded-lg p-6 flex flex-col items-center w-full md:w-1/3 "
           ref={(el) => (revealRefs.current[0] = el)}
@@ -202,7 +199,6 @@ const Profile = () => {
             Verified members find hosts faster
           </div>
         </div>
-        {/* Right: Main Profile Content */}
         <div className="flex-1" ref={(el) => (revealRefs.current[1] = el)}>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
             <div>
@@ -261,11 +257,9 @@ const Profile = () => {
               </button>
             </nav>
           </div>
-          {/* Tab Content */}
           <div ref={(el) => (revealRefs.current[2] = el)}>
             {activeTab === "about" && (
               <>
-                {/* Overview Section */}
                 <div className="mb-6">
                   <h2 className="text-lg font-semibold mb-2">OVERVIEW</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700 dark:text-gray-300">
@@ -292,7 +286,6 @@ const Profile = () => {
                     </div>
                   </div>
                 </div>
-                {/* About Me Section */}
                 <div className="mb-4">
                   <h2 className="text-lg font-semibold mb-2">ABOUT ME</h2>
                   <div className="bg-gray-50 dark:bg-dark-bg p-4 rounded text-gray-500 text-sm">

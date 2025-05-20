@@ -6,12 +6,15 @@ import { RouterProvider } from "react-router";
 import router from "./Routes/Routes";
 import { ThemeProvider } from "./theme-context";
 import { AuthProvider } from "./Provider/AuthProvider.jsx";
+import { DataProvider } from "./Provider/Dataprovider.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ThemeProvider>
       <AuthProvider>
-        <RouterProvider router={router} />
+        <DataProvider>
+          <RouterProvider router={router} />
+        </DataProvider>
       </AuthProvider>
     </ThemeProvider>
   </StrictMode>

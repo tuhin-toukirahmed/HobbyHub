@@ -11,6 +11,7 @@ import Settings from "../Pages/Settings";
 import DashBoard from "../Pages/DashBoard";
 import SignUp from "../Pages/SignUp";
 import Login from "../Pages/Login";
+import GroupDetails from "../Pages/GroupDetails";
 
 const router = createBrowserRouter([
   {
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
         path: "/signup",
         element: <SignUp />,
       },
+      {
+        path: "/group/:groupName",
+        element: <GroupDetails />,
+      }
     ],
   },
 ]);
