@@ -1,10 +1,21 @@
 import React from "react";
 import { Link } from "react-router";
+import { useAuth } from "../Provider/useAuth";
 
 const Navbar = () => {
+  const { logOut } = useAuth();
+  const handleLogout = async () => {
+    try {
+      await logOut();
+      window.alert("Logged out successfully!");
+    } catch (err) {
+      window.alert("Logout failed: " + err.message);
+    }
+  };
+
   return (
     <>
-      <div className="navbar bg-light-bg  shadow-sm md:px-10   mx-auto">
+      <div className="navbar bg-light-bg  shadow-sm   sm:max-w-xl md:max-w-full lg:max-w-screen-xl mx-auto">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -45,7 +56,24 @@ const Navbar = () => {
             </div>
           </div>
           <Link to="/" className="text-xl">
-            <h1 className="font-heading text-dark-text">HobbyHub</h1>
+            <span className="flex space-x-1">
+              <svg
+                className="w-6 text-deep-purple-accent-400"
+                viewBox="0 0 24 24"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeMiterlimit="10"
+                stroke="currentColor"
+                fill="none"
+              >
+                <rect x="3" y="1" width="7" height="12"></rect>
+                <rect x="3" y="17" width="7" height="6"></rect>
+                <rect x="14" y="1" width="7" height="6"></rect>
+                <rect x="14" y="11" width="7" height="12"></rect>
+              </svg>
+              <h1 className="font-heading text-dark-text">HobbyHub</h1>
+            </span>
           </Link>
         </div>
         <div className="navbar-end hidden lg:flex">
@@ -63,7 +91,22 @@ const Navbar = () => {
               <Link to="/profile">Profile</Link>
             </li>
             <li>
-              <Link to="/settings">Settings</Link>
+              <div className="dropdown dropdown-end">
+                <div tabIndex={0} role="button" className="   ">
+                  Settings
+                </div>
+                <ul
+                  tabIndex={0}
+                  className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+                >
+                  <li>
+                    <Link to="/settings">Settings & Accounts</Link>
+                  </li>
+                  <li>
+                    <button onClick={handleLogout}>Logout</button>
+                  </li>
+                </ul>
+              </div>
             </li>
           </ul>
         </div>

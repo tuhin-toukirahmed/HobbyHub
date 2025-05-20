@@ -8,7 +8,7 @@ const Layout = () => {
   return (
     <div className=" relative min-h-screen bg-light-bg dark:bg-dark-bg">
       <Navbar />
-      <div className="flex justify-end p-2 absolute bottom-0 left-0">
+      <div className="p-2  fixed bottom-0 left-0 z-10">
         <ToggleTheme />
       </div>
       <Outlet />

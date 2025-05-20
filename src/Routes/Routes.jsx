@@ -9,6 +9,8 @@ import ErrorPage from "./../Pages/ErrorPage";
 import Profile from "../Pages/Profile";
 import Settings from "../Pages/Settings";
 import DashBoard from "../Pages/DashBoard";
+import SignUp from "../Pages/SignUp";
+import Login from "../Pages/Login";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +49,14 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <DashBoard />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/signup",
+        element: <SignUp />,
       },
     ],
   },
