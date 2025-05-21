@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-router";
 import { useAuth } from "../Provider/useAuth";
 
@@ -13,9 +13,32 @@ const Navbar = () => {
     }
   };
 
+  const navbarRef = useRef(null);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 60) {
+        setVisible(false); // Hide on scroll down
+      } else {
+        setVisible(true); // Show on scroll up
+      }
+      setLastScrollY(currentScrollY);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
   return (
-    <div className="relative bg-red-200">
-      <div className="navbar bg-light-bg shadow-sm sm:max-w-xl md:max-w-full lg:max-w-screen-xl mx-auto fixed left-1/2 top-0 z-1   transform -translate-x-1/2 w-full max-w-4xl">
+    <div className="relative">
+      <div
+        ref={navbarRef}
+        className={`navbar bg-light-bg sm:max-w-xl md:max-w-full lg:max-w-screen-xl mx-auto fixed left-1/2 top-0 z-1 transform -translate-x-1/2 w-full max-w-4xl transition-transform duration-300 ${
+          visible ? "translate-y-0" : "-translate-y-full"
+        } dark:bg-dark-bg`}
+      >
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">

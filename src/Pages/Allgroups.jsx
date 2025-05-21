@@ -35,16 +35,16 @@ const Allgroups = () => {
         if (el) {
           gsap.fromTo(
             el,
-            { opacity: 0, filter: "blur(12px)", y: 8 },
+            { opacity: 0, filter: "blur(6px)", x: -8 },
             {
               opacity: 1,
               filter: "blur(0px)",
-              y: 0,
+              x: 0,
               duration: 0.5,
               ease: "power2.out",
               scrollTrigger: {
                 trigger: el,
-                start: "top 90%",
+                start: "top 80%",
                 toggleActions: "play none none none",
                 once: true,
               },
