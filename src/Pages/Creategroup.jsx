@@ -1,20 +1,23 @@
 import React, { useState } from "react";
+import { useAuth } from "../Provider/useAuth";
 
 const Creategroup = () => {
+  const { user } = useAuth();
   const [form, setForm] = useState({
     groupName: "",
     hobbyCategory: "",
     description: "",
     meetingLocation: "",
-    maxMembers: 1,
+    maxMembers: "",
     startDate: "",
     imageUrl: "",
     host: "",
-    orientationFee: 0,
+    orientationFee: "",
     location: "",
     date: "",
-    weeks: 1,
-    members: 1,
+    weeks: "",
+    members: "",
+    email: user?.email || "",
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
@@ -34,7 +37,7 @@ const Creategroup = () => {
       const res = await fetch("http://localhost:3000/mygroups", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, email: user?.email || "" }),
       });
       if (!res.ok) throw new Error("Failed to create group");
       setSuccess("Group created successfully!");
@@ -47,7 +50,9 @@ const Creategroup = () => {
 
   return (
     <div className="max-w-xl mx-auto rounded-xl shadow p-6 mt-16 mb-10 bg-white dark:bg-dark-bg text-gray-900 dark:text-gray-100">
-      <h1 className="text-2xl font-bold mb-6 dark:text-gray-100 text-gray-900">Create a New Group</h1>
+      <h1 className="text-2xl font-bold mb-6 dark:text-gray-100 text-gray-900">
+        Create a New Group
+      </h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           name="groupName"
@@ -153,6 +158,12 @@ const Creategroup = () => {
           onChange={handleChange}
           placeholder="Members"
           className="input input-bordered w-full bg-light-bg dark:bg-dark-surface text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-dark-border"
+        />
+        <input
+          name="email"
+          value={form.email}
+          readOnly
+          className="input input-bordered w-full bg-light-bg dark:bg-dark-surface text-white   border border-gray-200 dark:border-dark-border opacity-70 cursor-not-allowed"
         />
         <button
           type="submit"

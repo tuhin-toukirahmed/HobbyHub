@@ -74,7 +74,7 @@ const Settings = () => {
             delay: i * 0.2,
             scrollTrigger: {
               trigger: el,
-              start: "top 80%",
+              start: "top 90%",
               toggleActions: "play none none none",
             },
           }
@@ -106,7 +106,32 @@ const Settings = () => {
         displayName,
         photoURL: form.photoURL,
       });
+      // Update user data in backend by email
+      await fetch(
+        `http://localhost:3000/users/${encodeURIComponent(form.email)}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            username: form.username,
+            firstName: form.firstName,
+            lastName: form.lastName,
+            birthday: form.birthday,
+            gender: form.gender,
+            language: form.language,
+            phone: form.phone,
+            address: form.address,
+            email: form.email, // ensure email is included
+            emergencyName: form.emergencyName,
+            emergencyPhone: form.emergencyPhone,
+            emergencyEmail: form.emergencyEmail,
+            emergencyNotes: form.emergencyNotes,
+            photoURL: form.photoURL,
+          }),
+        }
+      );
       window.alert("Profile updated!");
+      window.location.href = "/profile";
     } catch (error) {
       window.alert("Error updating profile: " + error.message);
     } finally {

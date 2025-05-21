@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useAuth } from "../Provider/useAuth";
 import { getAuth, sendEmailVerification } from "firebase/auth";
+import { Link } from "react-router";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,6 +13,22 @@ const Profile = () => {
   console.log(user);
   const [emailSent, setEmailSent] = useState(user?.emailVerified || false);
   const [activeTab, setActiveTab] = useState("about");
+  const [form, setForm] = useState({
+    username: user?.displayName?.toLowerCase().replace(/\s+/g, "-") || "username",
+    firstName: user?.displayName?.split(" ")[0] || "",
+    lastName: user?.displayName?.split(" ")[1] || "",
+    birthday:  user?.birthday || "",
+    gender: user?.gender || "Male",
+    language: user?.language || "English",
+    phone: user?.phone || "",
+    address: user?.address || " ",
+    email: user?.email || "",
+    emergencyName: user?.emergencyName || "",
+    emergencyPhone: user?.emergencyPhone || "",
+    emergencyEmail: user?.emergencyEmail || "",
+    emergencyNotes: user?.emergencyNotes || "",
+    photoURL: user?.photoURL || "",
+  });
   const scrollRef = useRef(null);
   const revealRefs = useRef([]);
 
@@ -33,25 +50,22 @@ const Profile = () => {
         <div>
           <div>
             <span className="font-semibold">Full Name:</span>{" "}
-            {user?.displayName || "No Name"}
+            {form.firstName || form.lastName ? `${form.firstName} ${form.lastName}` : form.username || "No Name"}
           </div>
           <div>
-            <span className="font-semibold">Birth Date:</span> 19 May 1990
+            <span className="font-semibold">Birth Date:</span>{" "}
+            {form.birthday?.day && form.birthday?.month && form.birthday?.year ? `${form.birthday.day} ${form.birthday.month} ${form.birthday.year}` : "Not set"}
           </div>
           <div>
-            <span className="font-semibold">Gender:</span> Male
+            <span className="font-semibold">Gender:</span> {form.gender || "Not set"}
           </div>
           <div>
-            <span className="font-semibold">Preferred Language:</span> English
+            <span className="font-semibold">Preferred Language:</span> {form.language || "Not set"}
           </div>
         </div>
         <div className="flex flex-col items-center">
           <img
-            src={
-              user?.photoURL ||
-              "https://ui-avatars.com/api/?name=" +
-                (user?.displayName || "User")
-            }
+            src={form.photoURL || "https://ui-avatars.com/api/?name=" + encodeURIComponent(form.firstName || form.username || "User")}
             alt="Profile"
             className="w-32 h-32 rounded-full border-4 border-gray-200 mb-2 object-cover"
           />
@@ -67,28 +81,28 @@ const Profile = () => {
         <div>
           <div>
             <span className="font-semibold">Email:</span>{" "}
-            {user?.email || "No Email"}
+            {form.email || "No Email"}
           </div>
           <div>
-            <span className="font-semibold">Phone Number:</span> (201) 555-5555
+            <span className="font-semibold">Phone Number:</span> {form.phone || "Not set"}
           </div>
           <div>
-            <span className="font-semibold">Address:</span> Dhaka, Dhaka BGD
+            <span className="font-semibold">Address:</span> {form.address || "Not set"}
           </div>
         </div>
         <div>
           <div className="font-semibold mb-1">Emergency Contact</div>
           <div>
-            <span className="font-semibold">Name:</span>{" "}
+            <span className="font-semibold">Name:</span> {form.emergencyName || "Not set"}
           </div>
           <div>
-            <span className="font-semibold">Phone Number:</span> (201) 555-5555
+            <span className="font-semibold">Phone Number:</span> {form.emergencyPhone || "Not set"}
           </div>
           <div>
-            <span className="font-semibold">Email:</span>{" "}
+            <span className="font-semibold">Email:</span> {form.emergencyEmail || "Not set"}
           </div>
           <div>
-            <span className="font-semibold">Notes:</span>{" "}
+            <span className="font-semibold">Notes:</span> {form.emergencyNotes || "Not set"}
           </div>
         </div>
       </div>
@@ -138,6 +152,25 @@ const Profile = () => {
     }
   }, []);
 
+  // Fetch user profile from backend and update form state
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (!user?.email) return;
+      try {
+        const res = await fetch(`http://localhost:3000/users/${user.email}`);
+        if (!res.ok) throw new Error("Failed to fetch profile");
+        const data = await res.json();
+        // Defensive: merge backend data with current form (for missing fields)
+        setForm(prev => ({ ...prev, ...data }));
+      } catch (err) {
+        // Optionally handle error (e.g., show a message)
+        // For now, ignore and use default form
+      }
+    };
+    fetchProfile();
+    // Only run when user.email changes
+  }, [user?.email]);
+
   return (
     <div ref={scrollRef} data-scroll-container>
       <div
@@ -149,22 +182,18 @@ const Profile = () => {
           ref={(el) => (revealRefs.current[0] = el)}
         >
           <img
-            src={
-              user?.photoURL ||
-              "https://ui-avatars.com/api/?name=" +
-                (user?.displayName || "User")
-            }
+            src={form.photoURL || "https://ui-avatars.com/api/?name=" + encodeURIComponent(form.firstName || form.username || "User")}
             alt="Profile"
             className="w-32 h-32 rounded-full border-4 border-gray-200 mb-4 object-cover"
           />
           <h2 className="text-xl font-bold mb-1">
-            {user?.displayName || "No Name"}
+            {form.firstName || form.lastName ? `${form.firstName} ${form.lastName}` : form.username || "No Name"}
           </h2>
           <a href="#" className="text-blue-600 hover:underline text-sm mb-2">
-            {user?.email ? user.email : "No Email"}
+            {form.email ? form.email : "No Email"}
           </a>
           <div className="text-gray-500 text-sm mb-4">
-            Dhaka, Dhaka, Bangladesh
+            {form.address || "Not set"}
           </div>
           {emailSent || user?.emailVerified ? (
             <div className="bg-green-100 dark:bg-green-900 rounded p-3 w-full text-center text-green-700 dark:text-green-200 text-xs mb-4">
@@ -193,7 +222,7 @@ const Profile = () => {
           >
             {emailSent || user?.emailVerified
               ? "Verified"
-              : "Upgrade to Verify Profile"}
+              : "Verify Profile"}
           </button>
           <div className="text-xs text-gray-400 mt-2">
             Verified members find hosts faster
@@ -210,7 +239,7 @@ const Profile = () => {
               </div>
             </div>
             <button className="btn btn-primary mt-2 md:mt-0">
-              Edit My Profile
+              <Link to="/settings">Edit My Profile</Link>
             </button>
           </div>
           <div className="border-b border-gray-200 dark:border-dark-border mb-4">
@@ -266,23 +295,13 @@ const Profile = () => {
                     <div>
                       <div>0 references</div>
                       <div>No languages listed</div>
-                      <div>35, Male</div>
-                      <div>
-                        Member since 2025{" "}
-                        <span className="bg-orange-100 text-orange-600 rounded px-2 ml-1">
-                          New Member
-                        </span>
-                      </div>
+                        
                     </div>
                     <div>
                       <div>No occupation listed</div>
                       <div>No education listed</div>
                       <div>No hometown listed</div>
-                      <div>
-                        <a href="#" className="text-blue-600 hover:underline">
-                          Profile 5% complete
-                        </a>
-                      </div>
+                       
                     </div>
                   </div>
                 </div>

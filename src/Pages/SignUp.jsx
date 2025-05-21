@@ -37,6 +37,17 @@ const SignUp = () => {
     }
     try {
       await signUp(form.email, form.password);
+      // Send user data to server after successful signup
+      await fetch("http://localhost:3000/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          photoURL: form.photoURL,
+          createdAt: new Date().toISOString(),
+        }),
+      });
       window.alert("Registration successful!");
       navigate("/");
     } catch (err) {

@@ -40,7 +40,7 @@ const Mygroups = () => {
           <div className="text-gray-500 text-xs mb-1">{group.hobbyCategory}</div>
           <div className="text-gray-500 text-xs mb-1">Host: {group.host}</div>
           <div className="text-gray-500 text-xs mb-1">Location: {group.location}</div>
-          <div className="text-gray-500 text-xs mb-1">Date: {group.date}</div>
+          <div className="text-gray-500 text-xs mb-1">Date: {group.startDate}</div>
         </div>
       ))}
     </div>
