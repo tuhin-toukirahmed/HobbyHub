@@ -6,18 +6,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
-const categories = [
-  "All Hobbies",
-  "Art",
-  "Crafts",
-  "Culinary",
-  "Dance",
-  "Fashion",
-];
-
 const Allgroups = () => {
   const { groups, loading, error } = useContext(DataContext);
-  const [selected, setSelected] = useState("All Hobbies");
   const [showAll, setShowAll] = useState(false);
   const navigate = useNavigate();
   const scrollRef = useRef(null);
@@ -41,7 +31,7 @@ const Allgroups = () => {
   useEffect(() => {
     if (cardRefs.current.length) {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-      cardRefs.current.forEach((el, i) => {
+      cardRefs.current.forEach((el) => {
         if (el) {
           gsap.fromTo(
             el,
@@ -52,7 +42,6 @@ const Allgroups = () => {
               y: 0,
               duration: 0.5,
               ease: "power2.out",
-              delay: i * 0.13,
               scrollTrigger: {
                 trigger: el,
                 start: "top 90%",
@@ -65,15 +54,12 @@ const Allgroups = () => {
       });
       ScrollTrigger.refresh();
     }
-  }, [showAll, selected, groups]);
+  }, [showAll, groups]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
-  const filteredGroups =
-    selected === "All Hobbies"
-      ? groups
-      : groups.filter((g) => g.category === selected);
+  const filteredGroups = groups;
 
   const groupsToShow = showAll ? filteredGroups : filteredGroups.slice(0, 8);
 
@@ -81,19 +67,7 @@ const Allgroups = () => {
     <div ref={scrollRef} data-scroll-container className="sm:max-w-xl md:max-w-full lg:max-w-screen-xl mx-auto mt-16">
       <h1 className="text-3xl font-bold mb-6">Find a Group for Your Hobby</h1>
       <div className="flex gap-3 mb-8 flex-wrap">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            className={`px-4 py-2 rounded-full border transition font-medium text-base ${
-              selected === cat
-                ? "bg-gray-200 text-black"
-                : "bg-white text-gray-500 border-gray-200 hover:bg-gray-100"
-            }`}
-            onClick={() => { setSelected(cat); setShowAll(false); }}
-          >
-            {cat}
-          </button>
-        ))}
+        {/* Category buttons removed */}
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6">
         {groupsToShow.map((group, idx) => (
