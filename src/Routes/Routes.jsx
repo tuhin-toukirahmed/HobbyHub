@@ -37,7 +37,7 @@ const router = createBrowserRouter([
         element: <Creategroup />,
       },
       {
-        path: "/update-group",
+        path: "/update-group/:groupId",
         element: <UpdateGroup />,
       },
       {

@@ -52,8 +52,8 @@ const Creategroup = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto rounded-xl shadow p-6 mt-16 mb-10 bg-white dark:bg-dark-bg text-gray-900 dark:text-gray-100">
-      <h1 className="text-2xl font-bold mb-6 text-gray-900 ">
+    <div className="max-w-xl mx-auto rounded-xl shadow p-6 mt-16 mb-10 bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
+      <h1 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">
         Create a New Group
       </h1>
       <form onSubmit={handleSubmit} className="space-y-4">

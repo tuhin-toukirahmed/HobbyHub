@@ -198,7 +198,7 @@ const Profile = () => {
   // Update group handler (navigate to update page or open modal)
   const handleUpdate = (group) => {
     // Example: navigate to update page (implement as needed)
-    window.location.href = `/update-group?id=${encodeURIComponent(group.id || group._id || group.groupName)}`;
+    window.location.href = `/update-group/${encodeURIComponent(group.id || group._id || group.groupName)}`;
   };
 
   // Delete group handler
