@@ -26,7 +26,7 @@ const Settings = () => {
     gender: "Male",
     language: "English",
     phone: "",
-    address: "Dhaka, Dhaka BGD",
+    address: "Dhaka, Dhaka  ",
     email: user?.email || "",
     emergencyName: "",
     emergencyPhone: "",

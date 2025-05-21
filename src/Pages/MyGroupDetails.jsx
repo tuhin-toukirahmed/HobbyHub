@@ -1,6 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { useParams } from "react-router";
 import LocomotiveScroll from "locomotive-scroll";
+import { useAuth } from "../Provider/useAuth";
+import { DataContext } from "../Provider/DataContext";
 
 const MyGroupDetails = () => {
   const { groupId } = useParams();
@@ -8,6 +10,9 @@ const MyGroupDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const scrollRef = useRef(null);
+  const { user } = useAuth();
+  const { userEmail } = useContext(DataContext);
+  const email = userEmail || user?.email || "";
 
   useEffect(() => {
     let scroll = null;
@@ -49,6 +54,34 @@ const MyGroupDetails = () => {
     };
     if (groupId) fetchGroup();
   }, [groupId]);
+
+  // Delete group handler
+  const handleDelete = async () => {
+    if (!group?._id && !group?.id) {
+      alert('Group ID not found.');
+      return;
+    }
+    if (!email) {
+      alert('User email not found.');
+      return;
+    }
+    if (window.confirm('Are you sure you want to delete this group?')) {
+      try {
+        const groupIdToDelete = group._id || group.id || group.groupId;
+        const res = await fetch(`http://localhost:3000/mygroups/${encodeURIComponent(groupIdToDelete)}/${encodeURIComponent(email)}`, {
+          method: 'DELETE',
+        });
+        if (!res.ok) {
+          const errorText = await res.text();
+          alert(`Failed to delete group: ${errorText}`);
+          return;
+        }
+        window.location.href = '/my-groups';
+      } catch (err) {
+        alert('Delete error: ' + err.message);
+      }
+    }
+  };
 
   if (loading) return <div className="p-8 text-center">Loading...</div>;
   if (error) return (
@@ -143,8 +176,11 @@ const MyGroupDetails = () => {
           </div>
         </div>
       </div>
-      <button className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded text-lg transition">
-        Join group - ${orientationFee}
+      <button
+        className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded text-lg transition"
+        onClick={handleDelete}
+      >
+        Delete Group
       </button>
     </div>
   );

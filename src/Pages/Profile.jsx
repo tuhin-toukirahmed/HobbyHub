@@ -164,7 +164,7 @@ const Profile = () => {
         if (!res.ok) throw new Error("Failed to fetch profile");
         const data = await res.json();
         // Defensive: merge backend data with current form (for missing fields)
-        setForm(prev => ({ ...prev, ...data }));
+        setForm(prev => ({ ...prev, ...data, email: prev.email || data.email || user?.email || "" }));
       } catch (err) {
         // Optionally handle error (e.g., show a message)
         // For now, ignore and use default form
@@ -195,24 +195,7 @@ const Profile = () => {
     if (activeTab === "groups") fetchUserGroups();
   }, [user?.email, activeTab]);
 
-  // Update group handler (navigate to update page or open modal)
-  const handleUpdate = (group) => {
-    // Example: navigate to update page (implement as needed)
-    window.location.href = `/update-group/${encodeURIComponent(group.id || group._id || group.groupName)}`;
-  };
-
-  // Delete group handler
-  const handleDelete = async (group) => {
-    if (!window.confirm("Are you sure you want to delete this group?")) return;
-    try {
-      await fetch(`http://localhost:3000/mygroups/${encodeURIComponent(group.id || group._id || group.groupName)}`, {
-        method: "DELETE"
-      });
-      setUserGroups(prev => prev.filter(g => (g.id || g._id || g.groupName) !== (group.id || group._id || group.groupName)));
-    } catch {
-      alert("Failed to delete group");
-    }
-  };
+   
 
   return (
     <div ref={scrollRef} data-scroll-container>
@@ -395,7 +378,7 @@ const Profile = () => {
                             <td className="px-4 py-2">{group.startDate || group.date || "-"}</td>
                             <td className="px-4 py-2">
                               <button className="btn btn-xs btn-warning mr-2" onClick={() => handleUpdate(group)}>Update</button>
-                              <button className="btn btn-xs btn-error" onClick={() => handleDelete(group)}>Delete</button>
+                               
                             </td>
                           </tr>
                         ))}
