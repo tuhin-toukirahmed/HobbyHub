@@ -29,6 +29,9 @@ const Profile = () => {
     emergencyNotes: user?.emergencyNotes || "",
     photoURL: user?.photoURL || "",
   });
+  const [userGroups, setUserGroups] = useState([]);
+  const [groupsLoading, setGroupsLoading] = useState(false);
+  const [groupsError, setGroupsError] = useState("");
   const scrollRef = useRef(null);
   const revealRefs = useRef([]);
 
@@ -170,6 +173,46 @@ const Profile = () => {
     fetchProfile();
     // Only run when user.email changes
   }, [user?.email]);
+
+  // Fetch user's groups from backend
+  useEffect(() => {
+    const fetchUserGroups = async () => {
+      if (!user?.email) return;
+      setGroupsLoading(true);
+      setGroupsError("");
+      try {
+        const res = await fetch(`http://localhost:3000/mygroups/${encodeURIComponent(user.email)}`);
+        const data = await res.json();
+        // Only show groups where group.email matches user.email
+        setUserGroups(Array.isArray(data) ? data.filter(g => g.email === user.email) : []);
+      } catch (err) {
+        setGroupsError("Failed to load groups");
+        setUserGroups([]);
+      } finally {
+        setGroupsLoading(false);
+      }
+    };
+    if (activeTab === "groups") fetchUserGroups();
+  }, [user?.email, activeTab]);
+
+  // Update group handler (navigate to update page or open modal)
+  const handleUpdate = (group) => {
+    // Example: navigate to update page (implement as needed)
+    window.location.href = `/update-group?id=${encodeURIComponent(group.id || group._id || group.groupName)}`;
+  };
+
+  // Delete group handler
+  const handleDelete = async (group) => {
+    if (!window.confirm("Are you sure you want to delete this group?")) return;
+    try {
+      await fetch(`http://localhost:3000/mygroups/${encodeURIComponent(group.id || group._id || group.groupName)}`, {
+        method: "DELETE"
+      });
+      setUserGroups(prev => prev.filter(g => (g.id || g._id || g.groupName) !== (group.id || group._id || group.groupName)));
+    } catch {
+      alert("Failed to delete group");
+    }
+  };
 
   return (
     <div ref={scrollRef} data-scroll-container>
@@ -320,7 +363,47 @@ const Profile = () => {
               </>
             )}
             {activeTab === "groups" && (
-              <div className="mb-6">My Groups (to be updated)</div>
+              <div className="mb-6">
+                {groupsLoading ? (
+                  <div>Loading groups...</div>
+                ) : groupsError ? (
+                  <div className="text-red-500">{groupsError}</div>
+                ) : userGroups.length === 0 ? (
+                  <div>No groups found.</div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-200 dark:divide-dark-border">
+                      <thead className="bg-gray-100 dark:bg-dark-surface">
+                        <tr>
+                          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
+                          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Group Name</th>
+                          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                          <th className="px-4 py-2"></th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white dark:bg-dark-bg divide-y divide-gray-200 dark:divide-dark-border">
+                        {userGroups.map((group, idx) => (
+                          <tr key={group.groupName + idx}>
+                            <td className="px-4 py-2">
+                              <img
+                                src={group.imageUrl || "https://via.placeholder.com/80x40?text=No+Image"}
+                                alt={group.groupName}
+                                className="w-20 h-12 object-cover rounded"
+                              />
+                            </td>
+                            <td className="px-4 py-2 font-semibold">{group.groupName}</td>
+                            <td className="px-4 py-2">{group.startDate || group.date || "-"}</td>
+                            <td className="px-4 py-2">
+                              <button className="btn btn-xs btn-warning mr-2" onClick={() => handleUpdate(group)}>Update</button>
+                              <button className="btn btn-xs btn-error" onClick={() => handleDelete(group)}>Delete</button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
             )}
             {activeTab === "personal" && personalDetails}
             {activeTab === "contact" && contactDetails}

@@ -12,6 +12,7 @@ import DashBoard from "../Pages/DashBoard";
 import SignUp from "../Pages/SignUp";
 import Login from "../Pages/Login";
 import GroupDetails from "../Pages/GroupDetails";
+import MyGroupDetails from "../Pages/MyGroupDetails";
 
 const router = createBrowserRouter([
   {
@@ -62,6 +63,11 @@ const router = createBrowserRouter([
       {
         path: "/group/:groupName",
         element: <GroupDetails />,
+      },
+       
+      {
+        path: "/my-group-details/:groupId",
+        element: <MyGroupDetails />,
       }
     ],
   },
