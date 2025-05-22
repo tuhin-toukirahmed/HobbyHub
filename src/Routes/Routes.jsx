@@ -13,6 +13,7 @@ import SignUp from "../Pages/SignUp";
 import Login from "../Pages/Login";
 import GroupDetails from "../Pages/GroupDetails";
 import MyGroupDetails from "../Pages/MyGroupDetails";
+import ProtectedRoute from "../Components/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -27,30 +28,29 @@ const router = createBrowserRouter([
       {
         path: "/all-groups",
         element: <Allgroups />,
-      },
-      {
+      },      {
         path: "/my-groups",
-        element: <Mygroups />,
+        element: <ProtectedRoute><Mygroups /></ProtectedRoute>,
       },
       {
         path: "/create-group",
-        element: <Creategroup />,
+        element: <ProtectedRoute><Creategroup /></ProtectedRoute>,
       },
       {
         path: "/update-group/:groupId",
-        element: <UpdateGroup />,
+        element: <ProtectedRoute><UpdateGroup /></ProtectedRoute>,
       },
       {
         path: "/profile",
-        element: <Profile />,
+        element: <ProtectedRoute><Profile /></ProtectedRoute>,
       },
       {
         path: "/settings",
-        element: <Settings />,
+        element: <ProtectedRoute><Settings /></ProtectedRoute>,
       },
       {
         path: "/dashboard",
-        element: <DashBoard />,
+        element: <ProtectedRoute><DashBoard /></ProtectedRoute>,
       },
       {
         path: "/login",
@@ -62,12 +62,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/group/:groupName",
-        element: <GroupDetails />,
+        element:<ProtectedRoute><GroupDetails /></ProtectedRoute>,
       },
-       
-      {
+         {
         path: "/my-group-details/:groupId",
-        element: <MyGroupDetails />,
+        element: <ProtectedRoute><MyGroupDetails /></ProtectedRoute>,
       }
     ],
   },

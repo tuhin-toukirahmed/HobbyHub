@@ -115,10 +115,10 @@ const DashBoard = () => {
         {/* Main Panel */}
         <main className="flex-1 px-4 sm:px-6 md:px-8 lg:px-12 py-6 md:py-8 bg-light-bg dark:bg-dark-bg overflow-y-auto rounded-2xl shadow-md border border-gray-100/50 dark:border-gray-700/50">          <section>
             <h1 className="text-2xl font-bold mb-6 bg-white/50 dark:bg-gray-800/50 shadow-sm rounded-lg px-5 py-2 inline-block text-light-text dark:text-dark-text">
-              {activeSection === "dashboard" ? "Dashboard" : "My Group List"}
+              {activeSection === "dashboard" ? "Dashboard" : "All Groups"}
             </h1>
             <h4 className="text-xl font-semibold text-light-text dark:text-dark-text mb-6 mt-8 px-1">
-              {activeSection === "dashboard" ? "My Groups" : "All My Groups"}
+              {activeSection === "dashboard" ? "My Groups" : "All Groups"}
             </h4>
             {loading ? (
               <div className="text-center text-gray-500 dark:text-gray-300">
