@@ -67,8 +67,7 @@ const Allgroups = () => {
     <div ref={scrollRef} data-scroll-container className="sm:max-w-xl md:max-w-full lg:max-w-screen-xl mx-auto mt-16">
       <h1 className="text-3xl font-bold mb-6">Find a Group for Your Hobby</h1>
       <div className="flex gap-3 mb-8 flex-wrap">
-        {/* Category buttons removed */}
-      </div>
+       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6">
         {groupsToShow.map((group, idx) => (
           <div

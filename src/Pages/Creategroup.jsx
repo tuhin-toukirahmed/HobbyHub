@@ -222,7 +222,7 @@ const Creategroup = () => {
             name="email"
             value={email}
             readOnly
-            className="input input-bordered w-full bg-gray-100 dark:bg-dark-surface text-gray-700 dark:text-gray-200"
+            className="input input-bordered w-full bg-gray-100 dark:bg-dark-surface text-gray-700  "
           />
         </div>
         <button
