@@ -46,6 +46,10 @@ const Profile = () => {
     }
   };
 
+  const handleUpdate = (group) => {
+    window.location.href = `/update-group/${encodeURIComponent(group._id || group.id)}`;
+  };
+
   const personalDetails = (
     <div className="mb-6">
       <h2 className="text-lg font-semibold mb-2">PERSONAL DETAILS</h2>
@@ -165,7 +169,7 @@ const Profile = () => {
         const data = await res.json();
         // Defensive: merge backend data with current form (for missing fields)
         setForm(prev => ({ ...prev, ...data, email: prev.email || data.email || user?.email || "" }));
-      } catch (err) {
+      } catch {
         // Optionally handle error (e.g., show a message)
         // For now, ignore and use default form
       }
@@ -258,7 +262,7 @@ const Profile = () => {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
             <div>
               <h1 className="text-2xl font-bold mb-1">
-                Maybe Accepting Guests
+               Enjoy your stay, {form.firstName || form.username || "User"}!
               </h1>
               <div className="text-xs text-gray-500">
                 Last login less than a minute ago

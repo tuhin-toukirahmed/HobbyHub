@@ -115,7 +115,20 @@ const SignUp = () => {
           className="btn btn-outline w-full mt-2"
           onClick={async () => {
             try {
-              await signInWithGoogle();
+              const user = await signInWithGoogle();
+              // Send user data to server after Google signup
+              if (user && user.user) {
+                await fetch("http://localhost:3000/users", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    name: user.user.displayName || "",
+                    email: user.user.email || "",
+                    photoURL: user.user.photoURL || "",
+                    createdAt: new Date().toISOString(),
+                  }),
+                });
+              }
               window.alert("Continue with Google successful!");
               navigate("/");
             } catch (err) {
