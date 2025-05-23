@@ -12,6 +12,7 @@ const Allgroups = () => {
   const navigate = useNavigate();
   const scrollRef = useRef(null);
   const cardRefs = useRef([]);
+  const h1Ref = useRef(null);
 
   useEffect(() => {
     let scroll = null;
@@ -29,22 +30,33 @@ const Allgroups = () => {
   }, []);
 
   useEffect(() => {
+    // Animate h1 from left
+    if (h1Ref.current) {
+      gsap.fromTo(
+        h1Ref.current,
+        { x: 80, opacity: 0 },
+        { x: 0, opacity: 1, duration: 1.8, delay: 0.2, ease: "power2.out" }
+      );
+    }
+  }, []);
+
+  useEffect(() => {
     if (cardRefs.current.length) {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-      cardRefs.current.forEach((el) => {
+      cardRefs.current.forEach((el, idx) => {
         if (el) {
           gsap.fromTo(
             el,
-            { opacity: 0, filter: "blur(6px)", x: -8 },
+            { opacity: 0, filter: "blur(6px)" },
             {
-              opacity: 1,
+               opacity: 1,
               filter: "blur(0px)",
-              x: 0,
-              duration: 0.5,
-              ease: "power2.out",
+              duration: 0.6,
+              ease: "power3.int",
+              delay: idx * 0.08, 
               scrollTrigger: {
                 trigger: el,
-                start: "top 80%",
+                start: "top 90%",
                 toggleActions: "play none none none",
                 once: true,
               },
@@ -65,7 +77,7 @@ const Allgroups = () => {
 
   return (
     <div ref={scrollRef} data-scroll-container className="sm:max-w-xl md:max-w-full lg:max-w-screen-xl mx-auto mt-16">
-      <h1 className="text-3xl font-bold mb-6">Find a Group for Your Hobby</h1>
+      <h1 ref={h1Ref} className="text-3xl font-bold mb-6">Find a Group for Your Hobby</h1>
       <div className="flex gap-3 mb-8 flex-wrap">
        </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6">
@@ -81,7 +93,7 @@ const Allgroups = () => {
               alt={group.groupName}
               className="w-full h-32 object-cover rounded-lg mb-2"
             />
-            <div className="font-semibold text-lg mb-1">{group.groupName}</div>
+            <div className="font-semibold text-lg mb-1 dark:text-gray-800">{group.groupName}</div>
             <div className="text-gray-500 text-xs mb-1">{group.hobbyCategory}</div>
           </div>
         ))}

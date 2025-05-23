@@ -185,9 +185,9 @@ const Settings = () => {
               MY PERSONAL DETAILS
             </div>
             <div className="flex items-center mb-4">
-              <span className="text-sm">Username </span>
+              <span className="text-sm text-gray-600">Username </span>
               <input
-                className={`ml-2 px-2 py-1 rounded border ${border} ${inputBg} w-48`}
+                className={`ml-2 px-2 py-1 rounded border ${border} ${inputBg} w-48 text-gray-900`}
                 value={form.username}
                 name="username"
                 onChange={handleChange}
@@ -195,18 +195,18 @@ const Settings = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="block text-sm mb-1">First name</label>
+                <label className="block text-sm mb-1 text-gray-600">First name</label>
                 <input
-                  className={`w-full px-2 py-1 rounded border ${border} ${inputBg}`}
+                  className={`w-full px-2 py-1 rounded border ${border} ${inputBg} text-gray-900`}
                   value={form.firstName}
                   name="firstName"
                   onChange={handleChange}
                 />
               </div>
               <div>
-                <label className="block text-sm mb-1">Last name</label>
+                <label className="block text-sm mb-1 text-gray-600">Last name</label>
                 <input
-                  className={`w-full px-2 py-1 rounded border ${border} ${inputBg}`}
+                  className={`w-full px-2 py-1 rounded border ${border} ${inputBg} text-gray-900`}
                   value={form.lastName}
                   name="lastName"
                   onChange={handleChange}
@@ -214,9 +214,9 @@ const Settings = () => {
               </div>
             </div>
             <div className="mb-4">
-              <label className="block text-sm mb-1">Profile Photo URL</label>
+              <label className="block text-sm mb-1 text-gray-600">Profile Photo URL</label>
               <input
-                className={`w-full px-2 py-1 rounded border ${border} ${inputBg}`}
+                className={`w-full px-2 py-1 rounded border ${border} ${inputBg} text-gray-900`}
                 value={form.photoURL}
                 name="photoURL"
                 onChange={handleChange}
@@ -225,10 +225,10 @@ const Settings = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
               <div>
-                <label className="block text-sm mb-1">Birthday</label>
+                <label className="block text-sm mb-1 text-gray-600">Birthday</label>
                 <div className="flex gap-1">
                   <select
-                    className={`rounded border ${border} ${inputBg}`}
+                    className={`rounded border ${border} ${inputBg} text-gray-900`}
                     value={form.birthday.day}
                     name="birthday.day"
                     onChange={handleChange}
@@ -238,7 +238,7 @@ const Settings = () => {
                     ))}
                   </select>
                   <select
-                    className={`rounded border ${border} ${inputBg}`}
+                    className={`rounded border ${border} ${inputBg} text-gray-900`}
                     value={form.birthday.month}
                     name="birthday.month"
                     onChange={handleChange}
@@ -248,7 +248,7 @@ const Settings = () => {
                     ))}
                   </select>
                   <select
-                    className={`rounded border ${border} ${inputBg}`}
+                    className={`rounded border ${border} ${inputBg} text-gray-900`}
                     value={form.birthday.year}
                     name="birthday.year"
                     onChange={handleChange}
@@ -262,9 +262,9 @@ const Settings = () => {
                 </div>
               </div>
               <div>
-                <label className="block text-sm mb-1">Gender</label>
+                <label className="block text-sm mb-1 text-gray-600">Gender</label>
                 <select
-                  className={`w-full rounded border ${border} ${inputBg}`}
+                  className={`w-full rounded border ${border} ${inputBg} text-gray-900`}
                   value={form.gender}
                   name="gender"
                   onChange={handleChange}
@@ -275,9 +275,9 @@ const Settings = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-sm mb-1">Preferred Language</label>
+                <label className="block text-sm mb-1 text-gray-600">Preferred Language</label>
                 <select
-                  className={`w-full rounded border ${border} ${inputBg}`}
+                  className={`w-full rounded border ${border} ${inputBg} text-gray-900`}
                   value={form.language}
                   name="language"
                   onChange={handleChange}
@@ -300,21 +300,21 @@ const Settings = () => {
               MY CONTACT DETAILS
             </div>
             <div className="mb-4">
-              <label className="block text-sm mb-1">Phone</label>
+              <label className="block text-sm mb-1 text-gray-600">Phone</label>
               <div className="flex items-center gap-2">
-                <span className="text-lg">🇺🇸</span>
+                <span className="text-lg text-gray-600">BD</span>
                 <input
-                  className={`w-full px-2 py-1 rounded border ${border} ${inputBg}`}
+                  className={`w-full px-2 py-1 rounded border ${border} ${inputBg} text-gray-900`}
                   value={form.phone}
                   name="phone"
                   onChange={handleChange}
-                  placeholder="(201) 555-5555"
+                  placeholder="+8801XNN-NNNNNN"
                 />
               </div>
             </div>
             <div className="mb-2">
-              <label className="block text-sm mb-1">Home Address</label>
-              <div className="text-sm">Dhaka, Bangladesh</div>
+              <label className="block text-sm mb-1 text-gray-600">Home Address</label>
+              <div className="text-sm text-gray-600">Dhaka, Bangladesh</div>
               <div className="text-xs text-blue-600 cursor-pointer">
                 Public Profile Location: Dhaka, Dhaka, Bangladesh
               </div>
@@ -331,23 +331,21 @@ const Settings = () => {
               ACCOUNT DETAILS <span className="ml-1">🔒</span>
             </div>
             <div className="mb-2">
-              <label className="block text-sm mb-1">Email</label>
-              <div className="flex   gap-2 flex-col items-start">
+              <label className="block text-sm mb-1 text-gray-600">Email</label>
+              <div className="flex   gap-2 flex-col items-start text-gray-900">
                 <span>{form.email}</span>
                 <div className="flex gap-2 flex-col ">
+                   
                   <span className="text-blue-600 text-xs cursor-pointer">
-                    Confirm My Email
-                  </span>
-                  <span className="text-blue-600 text-xs cursor-pointer">
-                    Change My Email
+                    Change Email
                   </span>
                 </div>
               </div>
             </div>
             <div className="mb-2">
-              <label className="block text-sm mb-1">Password</label>
+              <label className="block text-sm mb-1 text-gray-600">Password</label>
               <span className="text-blue-600 text-xs cursor-pointer">
-                Change My Password
+                Change Password
               </span>
             </div>
           </div>
@@ -365,42 +363,43 @@ const Settings = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
               <div>
-                <label className="block text-sm mb-1">Name</label>
+                <label className="block text-sm mb-1 text-gray-600">Name</label>
                 <input
-                  className={`w-full px-2 py-1 rounded border ${border} ${inputBg}`}
+                  className={`w-full px-2 py-1 rounded border ${border} ${inputBg} text-gray-900`}
+                   
                   value={form.emergencyName}
                   name="emergencyName"
                   onChange={handleChange}
                 />
               </div>
               <div>
-                <label className="block text-sm mb-1">Phone Number</label>
+                <label className="block text-sm mb-1 text-gray-600">Phone Number</label>
                 <div className="flex items-center gap-2">
-                  <span className="text-lg">🇺🇸</span>
+                  <span className="text-lg text-gray-600">BD</span>
                   <input
-                    className={`w-full px-2 py-1 rounded border ${border} ${inputBg}`}
+                    className={`w-full px-2 py-1 rounded border ${border} ${inputBg} text-gray-900`}
                     value={form.emergencyPhone}
                     name="emergencyPhone"
                     onChange={handleChange}
-                    placeholder="(201) 555-5555"
+                    placeholder="+8801XNN-NNNNNN"
                   />
                 </div>
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
               <div>
-                <label className="block text-sm mb-1">Email</label>
+                <label className="block text-sm mb-1 text-gray-600">Email</label>
                 <input
-                  className={`w-full px-2 py-1 rounded border ${border} ${inputBg}`}
+                  className={`w-full px-2 py-1 rounded border ${border} ${inputBg} text-gray-900`}
                   value={form.emergencyEmail}
                   name="emergencyEmail"
                   onChange={handleChange}
                 />
               </div>
               <div>
-                <label className="block text-sm mb-1">Notes</label>
+                <label className="block text-sm mb-1 text-gray-600">Notes</label>
                 <input
-                  className={`w-full px-2 py-1 rounded border ${border} ${inputBg}`}
+                  className={`w-full px-2 py-1 rounded border ${border} ${inputBg} text-gray-900`}
                   value={form.emergencyNotes}
                   name="emergencyNotes"
                   onChange={handleChange}

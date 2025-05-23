@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
+import gsap from "gsap";
 import JoinedGroups from "../Components/JoinedGroups";
 import { useNavigate } from "react-router";
 import { useAuth } from "../Provider/useAuth";
@@ -15,7 +16,9 @@ const DashBoard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [activeSection, setActiveSection] = useState("dashboard"); // To track which section is active
-  
+  const sidebarRef = useRef(null);
+  const mainRef = useRef(null);
+
   const fetchMyGroups = useCallback(async () => {
     setLoading(true);
     setError("");
@@ -35,7 +38,7 @@ const DashBoard = () => {
       setLoading(false);
     }
   }, [user?.email]);
-  
+
   const fetchAllGroups = useCallback(async () => {
     setLoading(true);
     setError("");
@@ -43,7 +46,7 @@ const DashBoard = () => {
       // Updated to use the mygroups endpoint instead of groups
       const res = await fetch("http://localhost:3000/mygroups");
       const data = await res.json();
-      setMyGroups(Array.isArray(data) ? data : []); 
+      setMyGroups(Array.isArray(data) ? data : []);
       setActiveSection("groups");
     } catch {
       setError("Failed to load all groups");
@@ -54,15 +57,34 @@ const DashBoard = () => {
   }, []);
 
   useEffect(() => {
-    // Initially load the dashboard view (my groups)
     if (user?.email) fetchMyGroups();
   }, [user?.email, fetchMyGroups]);
+
+  useEffect(() => {
+    if (sidebarRef.current) {
+      gsap.fromTo(
+        sidebarRef.current,
+        { x: "-100%", opacity: 0 },
+        { x: "0%", opacity: 1, duration: 1.2, ease: "power3.out" }
+      );
+    }
+    if (mainRef.current) {
+      gsap.fromTo(
+        mainRef.current,
+        { y: "-100%", opacity: 0 },
+        { y: "0%", opacity: 1, duration: 1.2, delay: 0.1, ease: "power3.out" }
+      );
+    }
+  }, []);
 
   return (
     <div className="min-h-screen p-4 md:p-6 bg-light-section dark:bg-dark-bg transition-colors duration-300 mt-16 sm:max-w-xl md:max-w-full lg:max-w-screen-xl mx-auto">
       <div className="flex flex-row gap-4 md:gap-6 h-[calc(100vh-7rem)]">
         {/* Sidebar - now stays on side for all screen sizes */}
-        <aside className="w-16 md:w-64 h-full bg-gradient-to-b from-light-card to-light-bg/90 dark:from-dark-surface dark:to-dark-bg/90 flex flex-col justify-between py-4 md:py-8 px-1 md:px-4 transition-colors duration-300 shadow-xl z-10 rounded-2xl border border-gray-100/50 dark:border-gray-700/50">
+        <aside
+          ref={sidebarRef}
+          className="w-16 md:w-64 h-full bg-gradient-to-b from-light-card to-light-bg/90 dark:from-dark-surface dark:to-dark-bg/90 flex flex-col justify-between py-4 md:py-8 px-1 md:px-4 transition-colors duration-300 shadow-xl z-10 rounded-2xl border border-gray-100/50 dark:border-gray-700/50"
+        >
           <div className="flex flex-col items-center md:items-start gap-3 md:mb-8">
             {/* Logo or icon always visible */}
             <div className="w-10 h-10 bg-primary/20 dark:bg-primary/30 rounded-lg flex items-center justify-center text-primary dark:text-primary-light">
@@ -111,9 +133,15 @@ const DashBoard = () => {
             </button>
           </div>
         </aside>
-        
+
         {/* Main Panel */}
-        <main className="flex-1 px-4 sm:px-6 md:px-8 lg:px-12 py-6 md:py-8 bg-light-bg dark:bg-dark-bg overflow-y-auto rounded-2xl shadow-md border border-gray-100/50 dark:border-gray-700/50">          <section>
+        <main
+          ref={mainRef}
+          data-scroll-container
+          className="flex-1 px-4 sm:px-6 md:px-8 lg:px-12 py-6 md:py-8 bg-light-bg dark:bg-dark-bg overflow-y-auto rounded-2xl shadow-md border border-gray-100/50 dark:border-gray-700/50"
+        >
+          {" "}
+          <section>
             <h1 className="text-2xl font-bold mb-6 bg-white/50 dark:bg-gray-800/50 shadow-sm rounded-lg px-5 py-2 inline-block text-light-text dark:text-dark-text">
               {activeSection === "dashboard" ? "Dashboard" : "All Groups"}
             </h1>
@@ -137,7 +165,8 @@ const DashBoard = () => {
                 {myGroups.map((group, idx) => (
                   <div
                     key={group._id || group.groupName + idx}
-                    className="bg-white dark:bg-gray-800 rounded-xl shadow p-4 flex flex-col items-start hover:shadow-lg transition cursor-pointer"                    onClick={() => navigate(`/my-group-details/${group._id}`)}
+                    className="bg-white rounded-xl shadow p-4 flex flex-col items-start hover:shadow-lg transition cursor-pointer"
+                    onClick={() => navigate(`/my-group-details/${group._id}`)}
                   >
                     <img
                       src={
@@ -145,12 +174,12 @@ const DashBoard = () => {
                         "https://via.placeholder.com/300x160?text=No+Image"
                       }
                       alt={group.groupName}
-                      className="w-full h-32 object-cover rounded-lg mb-2"
+                      className="w-full h-32 object-cover rounded-lg mb-2 text-gray-800"
                     />
-                    <div className="font-semibold text-lg mb-1 text-gray-800 dark:text-gray-100">
+                    <div className="font-semibold text-lg mb-1 text-gray-900  ">
                       {group.groupName}
                     </div>
-                    <div className="text-gray-600 dark:text-gray-400 text-xs mb-1">
+                    <div className="text-gray-400 text-xs mb-1">
                       {group.hobbyCategory}
                     </div>
                   </div>
@@ -158,7 +187,6 @@ const DashBoard = () => {
               </div>
             )}
           </section>
-          
           {activeSection === "dashboard" && (
             <section>
               <h4 className="text-xl font-semibold text-light-text dark:text-dark-text mb-6 mt-8 px-1">
@@ -176,22 +204,28 @@ const DashBoard = () => {
 };
 
 const SidebarItem = ({ icon, label, onClick, isActive = false }) => (
-  <div 
+  <div
     onClick={onClick}
     className={`flex items-center justify-center md:justify-start w-full gap-3 px-2 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-colors duration-200 group ${
-      isActive ? 'bg-blue-100 dark:bg-gray-700' : ''
+      isActive ? "bg-blue-100 dark:bg-gray-700" : ""
     }`}
   >
-    <div className={`flex items-center justify-center w-8 h-8 ${
-      isActive 
-        ? 'text-primary dark:text-primary-light' 
-        : 'text-gray-600 dark:text-gray-300 group-hover:text-primary dark:group-hover:text-primary-light'
-    }`}>
+    <div
+      className={`flex items-center justify-center w-8 h-8 ${
+        isActive
+          ? "text-primary dark:text-primary-light"
+          : "text-gray-600 dark:text-gray-300 group-hover:text-primary dark:group-hover:text-primary-light"
+      }`}
+    >
       {icon}
     </div>
-    <span className={`hidden md:inline text-sm font-medium ${
-      isActive ? 'text-primary dark:text-primary-light' : ''
-    }`}>{label}</span>
+    <span
+      className={`hidden md:inline text-sm font-medium ${
+        isActive ? "text-primary dark:text-primary-light" : ""
+      }`}
+    >
+      {label}
+    </span>
   </div>
 );
 
@@ -246,7 +280,7 @@ const JoinedGroupsCardGrid = () => {
   return groups.map((group, idx) => (
     <div
       key={group._id || group.groupName + idx}
-      className="bg-white dark:bg-gray-800 rounded-xl shadow p-4 flex flex-col items-start hover:shadow-lg transition cursor-pointer"
+      className="bg-white   rounded-xl shadow p-4 flex flex-col items-start hover:shadow-lg transition cursor-pointer"
       onClick={() => navigate(`/group/${encodeURIComponent(group.groupName)}`)}
     >
       <img
@@ -256,10 +290,10 @@ const JoinedGroupsCardGrid = () => {
         alt={group.groupName}
         className="w-full h-32 object-cover rounded-lg mb-2"
       />
-      <div className="font-semibold text-lg mb-1 text-gray-800 dark:text-gray-100">
+      <div className="font-semibold text-lg mb-1 text-gray-800  ">
         {group.groupName}
       </div>
-      <div className="text-gray-600 dark:text-gray-400 text-xs mb-1">
+      <div className="text-gray-400   text-xs mb-1">
         {group.hobbyCategory}
       </div>
     </div>

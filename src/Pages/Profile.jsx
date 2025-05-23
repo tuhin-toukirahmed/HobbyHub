@@ -216,7 +216,7 @@ const Profile = () => {
             alt="Profile"
             className="w-32 h-32 rounded-full border-4 border-gray-200 mb-4 object-cover"
           />
-          <h2 className="text-xl font-bold mb-1">
+          <h2 className="text-xl font-bold mb-1 dark:text-gray-800">
             {form.firstName || form.lastName ? `${form.firstName} ${form.lastName}` : form.username || "No Name"}
           </h2>
           <a href="#" className="text-blue-600 hover:underline text-sm mb-2">
@@ -246,7 +246,7 @@ const Profile = () => {
             </div>
           )}
           <button
-            className="btn btn-success w-full"
+            className="btn btn-success w-full dark:bg-green-700 dark:text-white"
             onClick={handleVerify}
             disabled={emailSent || user?.emailVerified}
           >
@@ -255,21 +255,21 @@ const Profile = () => {
               : "Verify Profile"}
           </button>
           <div className="text-xs text-gray-400 mt-2">
-            Verified members find hosts faster
+            Verified members find groups faster
           </div>
         </div>
         <div className="flex-1" ref={(el) => (revealRefs.current[1] = el)}>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
             <div>
               <h1 className="text-2xl font-bold mb-1">
-               Enjoy your stay, {form.firstName || form.username || "User"}!
+               Welcome, {form.firstName || form.username || "User"}!
               </h1>
               <div className="text-xs text-gray-500">
                 Last login less than a minute ago
               </div>
             </div>
             <button className="btn btn-primary mt-2 md:mt-0">
-              <Link to="/settings">Edit My Profile</Link>
+              <Link to="/settings">Edit Profile</Link>
             </button>
           </div>
           <div className="border-b border-gray-200 dark:border-dark-border mb-4">
@@ -338,7 +338,7 @@ const Profile = () => {
                 <div className="mb-4">
                   <h2 className="text-lg font-semibold mb-2">ABOUT ME</h2>
                   <div className="bg-gray-50 dark:bg-dark-bg p-4 rounded text-gray-500 text-sm">
-                    Couchsurfers decide whom to meet based on profiles! Until
+                    HobbyHub decide whom to meet based on profiles! Until
                     you{" "}
                     <a href="#" className="text-blue-600 underline">
                       fill out your profile
