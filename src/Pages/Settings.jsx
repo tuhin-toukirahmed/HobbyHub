@@ -10,6 +10,7 @@ import {
   reauthenticateWithPopup,
   GoogleAuthProvider,
 } from "firebase/auth";
+import { toast } from "react-hot-toast";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -130,10 +131,10 @@ const Settings = () => {
           }),
         }
       );
-      window.alert("Profile updated!");
+      toast.success("Profile updated!");
       window.location.href = "/profile";
     } catch (error) {
-      window.alert("Error updating profile: " + error.message);
+      toast.error("Error updating profile: " + error.message);
     } finally {
       setSaving(false);
     }
@@ -145,10 +146,10 @@ const Settings = () => {
       const provider = new GoogleAuthProvider();
       await reauthenticateWithPopup(getAuth().currentUser, provider);
       await deleteUser(getAuth().currentUser);
-      window.alert("Account deleted successfully.");
+      toast.success("Account deleted successfully.");
       window.location.href = "/";
     } catch (error) {
-      window.alert("Error deleting account: " + error.message);
+      toast.error("Error deleting account: " + error.message);
     }
   };
 

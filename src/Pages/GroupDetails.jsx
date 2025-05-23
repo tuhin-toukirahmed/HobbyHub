@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import { DataContext } from "../Provider/DataContext.js";
 import LocomotiveScroll from "locomotive-scroll";
 import { useAuth } from "../Provider/useAuth";
+import { toast } from "react-hot-toast";
 
 const GroupDetails = () => {
   const { groupName } = useParams();
@@ -60,7 +61,7 @@ const GroupDetails = () => {
     setJoinSuccess("");
     setJoinError("");
     if (!userEmail) {
-      window.alert("You must be logged in to join a group.");
+      toast.error("You must be logged in to join a group.");
       return;
     }
     if (!window.confirm(`Are you sure you want to join '${group.groupName}'?`)) return;
@@ -78,8 +79,10 @@ const GroupDetails = () => {
       });
       if (!res.ok) throw new Error("Failed to join group");
       setJoinSuccess("Successfully joined the group!");
+      toast.success("Successfully joined the group!");
     } catch (err) {
       setJoinError(err.message || "Failed to join group");
+      toast.error(err.message || "Failed to join group");
     } finally {
       setJoining(false);
     }

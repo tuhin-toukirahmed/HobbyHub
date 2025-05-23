@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import LocomotiveScroll from "locomotive-scroll";
 import { useAuth } from "../Provider/useAuth";
 import { DataContext } from "../Provider/DataContext";
+import { toast } from "react-hot-toast";
 
 const MyGroupDetails = () => {
   const { groupId } = useParams();
@@ -58,11 +59,11 @@ const MyGroupDetails = () => {
   // Delete group handler
   const handleDelete = async () => {
     if (!group?._id && !group?.id) {
-      alert('Group ID not found.');
+      toast.error('Group ID not found.');
       return;
     }
     if (!email) {
-      alert('User email not found.');
+      toast.error('User email not found.');
       return;
     }
     if (window.confirm('Are you sure you want to delete this group?')) {
@@ -73,12 +74,13 @@ const MyGroupDetails = () => {
         });
         if (!res.ok) {
           const errorText = await res.text();
-          alert(`Failed to delete group: ${errorText}`);
+          toast.error(`Failed to delete group: ${errorText}`);
           return;
         }
+        toast.success('Group deleted successfully!');
         window.location.href = '/my-groups';
       } catch (err) {
-        alert('Delete error: ' + err.message);
+        toast.error('Delete error: ' + err.message);
       }
     }
   };

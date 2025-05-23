@@ -5,6 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useAuth } from "../Provider/useAuth";
 import { getAuth, sendEmailVerification } from "firebase/auth";
 import { Link } from "react-router";
+import { toast } from "react-hot-toast";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -40,8 +41,9 @@ const Profile = () => {
       try {
         await sendEmailVerification(getAuth().currentUser);
         setEmailSent(true);
+        toast.success("Verification email sent!");
       } catch (err) {
-        alert("Failed to send verification email: " + err.message);
+        toast.error("Failed to send verification email: " + err.message);
       }
     }
   };

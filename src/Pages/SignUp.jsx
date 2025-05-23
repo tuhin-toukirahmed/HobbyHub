@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "../Provider/useAuth";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { toast } from "react-hot-toast";
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -12,8 +13,8 @@ const SignUp = () => {
   });
   const [error, setError] = useState("");
   const { signUp, signInWithGoogle } = useAuth();
-    const [showPassword, setShowPassword] = useState(false);
-  
+  const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
 
   const validatePassword = (password) => {
@@ -35,7 +36,7 @@ const SignUp = () => {
     const passwordError = validatePassword(form.password);
     if (passwordError) {
       setError(passwordError);
-      window.alert(passwordError);
+      toast.error(passwordError);
       return;
     }
     try {
@@ -51,11 +52,11 @@ const SignUp = () => {
           createdAt: new Date().toISOString(),
         }),
       });
-      window.alert("Registration successful!");
+      toast.success("Registration successful!");
       navigate("/");
     } catch (err) {
       setError(err.message);
-      window.alert(err.message);
+      toast.error(err.message);
     }
   };
 
@@ -65,7 +66,9 @@ const SignUp = () => {
         onSubmit={handleSubmit}
         className="bg-white dark:bg-dark-surface p-8 rounded shadow-md w-full max-w-md"
       >
-        <h1 className="text-2xl font-bold mb-6 text-center text-gray-900">Register</h1>
+        <h1 className="text-2xl font-bold mb-6 text-center text-gray-900">
+          Register
+        </h1>
         <div className="mb-4">
           <label className="block mb-1 text-gray-900">Name</label>
           <input
@@ -97,7 +100,8 @@ const SignUp = () => {
             onChange={handleChange}
             className="input input-bordered w-full"
           />
-        </div>        <div className="mb-4 relative">
+        </div>
+        <div className="mb-4 relative">
           <label className="block mb-1 text-gray-900">Password</label>
           <input
             type={showPassword ? "text" : "password"}
@@ -115,7 +119,10 @@ const SignUp = () => {
             aria-label={showPassword ? "Hide password" : "Show password"}
           >
             {showPassword ? (
-              <FaRegEyeSlash size={22} className="text-gray-900 dark:text-gray-200" />
+              <FaRegEyeSlash
+                size={22}
+                className="text-gray-900 dark:text-gray-200"
+              />
             ) : (
               <FaRegEye size={22} className="text-gray-900 dark:text-gray-200" />
             )}
@@ -144,11 +151,11 @@ const SignUp = () => {
                   }),
                 });
               }
-              window.alert("Continue with Google successful!");
+              toast.success("Continue with Google successful!");
               navigate("/");
             } catch (err) {
               setError(err.message);
-              window.alert(err.message);
+              toast.error(err.message);
             }
           }}
         >
