@@ -76,7 +76,7 @@ const Allgroups = () => {
   const groupsToShow = showAll ? filteredGroups : filteredGroups.slice(0, 8);
 
   return (
-    <div ref={scrollRef} data-scroll-container className="sm:max-w-xl md:max-w-full lg:max-w-screen-xl mx-auto mt-16">
+    <div ref={scrollRef} data-scroll-container className="sm:max-w-xl md:max-w-full lg:max-w-screen-xl mx-auto mt-20">
       <h1 ref={h1Ref} className="text-3xl font-bold mb-6">Find a Group for Your Hobby</h1>
       <div className="flex gap-3 mb-8 flex-wrap">
        </div>

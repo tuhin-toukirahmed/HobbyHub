@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "../Provider/useAuth";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -11,6 +12,8 @@ const SignUp = () => {
   });
   const [error, setError] = useState("");
   const { signUp, signInWithGoogle } = useAuth();
+    const [showPassword, setShowPassword] = useState(false);
+  
   const navigate = useNavigate();
 
   const validatePassword = (password) => {
@@ -62,9 +65,9 @@ const SignUp = () => {
         onSubmit={handleSubmit}
         className="bg-white dark:bg-dark-surface p-8 rounded shadow-md w-full max-w-md"
       >
-        <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
+        <h1 className="text-2xl font-bold mb-6 text-center text-gray-900">Register</h1>
         <div className="mb-4">
-          <label className="block mb-1">Name</label>
+          <label className="block mb-1 text-gray-900">Name</label>
           <input
             type="text"
             name="name"
@@ -75,7 +78,7 @@ const SignUp = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block mb-1">Email</label>
+          <label className="block mb-1 text-gray-900">Email</label>
           <input
             type="email"
             name="email"
@@ -86,7 +89,7 @@ const SignUp = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block mb-1">Photo URL</label>
+          <label className="block mb-1 text-gray-900">Photo URL</label>
           <input
             type="text"
             name="photoURL"
@@ -94,17 +97,29 @@ const SignUp = () => {
             onChange={handleChange}
             className="input input-bordered w-full"
           />
-        </div>
-        <div className="mb-4">
-          <label className="block mb-1">Password</label>
+        </div>        <div className="mb-4 relative">
+          <label className="block mb-1 text-gray-900">Password</label>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             name="password"
             value={form.password}
             onChange={handleChange}
             required
-            className="input input-bordered w-full"
+            className="input input-bordered w-full pr-10"
           />
+          <button
+            type="button"
+            className="absolute right-3 top-12 transform -translate-y-1/2 text-xl focus:outline-none z-20"
+            tabIndex={-1}
+            onClick={() => setShowPassword((prev) => !prev)}
+            aria-label={showPassword ? "Hide password" : "Show password"}
+          >
+            {showPassword ? (
+              <FaRegEyeSlash size={22} className="text-gray-900 dark:text-gray-200" />
+            ) : (
+              <FaRegEye size={22} className="text-gray-900 dark:text-gray-200" />
+            )}
+          </button>
         </div>
         {error && <div className="text-red-500 mb-2">{error}</div>}
         <button type="submit" className="btn btn-primary w-full">
@@ -112,7 +127,7 @@ const SignUp = () => {
         </button>
         <button
           type="button"
-          className="btn btn-outline w-full mt-2"
+          className="btn btn-outline w-full mt-2 text-gray-900 hover:bg-gray-200"
           onClick={async () => {
             try {
               const user = await signInWithGoogle();
@@ -139,7 +154,7 @@ const SignUp = () => {
         >
           Continue with Google
         </button>
-        <div className="mt-4 text-center">
+        <div className="mt-4 text-center text-gray-900">
           Already have an account?{" "}
           <Link to="/login" className="text-blue-500 underline">
             Login
