@@ -1,3 +1,23 @@
+# HobbyHub
+
+HobbyHub is a modern web application designed to connect people with similar interests and hobbies. Users can join or create groups, participate in discussions, and explore a vibrant community centered around shared passions. The project is built with React, Vite, and Tailwind CSS for a fast and beautiful user experience.
+
+## Used Technology
+
+- React
+- Vite
+- Tailwind CSS
+- JavaScript (ES6+)
+- Firebase (for authentication and backend)
+- GSAP (GreenSock Animation Platform)
+- Locomotive Scroll
+
+## Live Links
+
+- [Live Site](https://hobbyhub-joinforfun.web.app/)
+ 
+---
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
