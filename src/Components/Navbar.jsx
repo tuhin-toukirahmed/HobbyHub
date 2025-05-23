@@ -39,11 +39,13 @@ const Navbar = () => {
   }, [lastScrollY]);
 
   return (
-    <div className="relative">      <div
+    <div className="relative">
+      {" "}
+      <div
         ref={navbarRef}
         className={`navbar bg-light-bg sm:max-w-xl md:max-w-full lg:max-w-screen-xl mx-auto fixed left-1/2 top-0 z-50 transform -translate-x-1/2 w-full max-w-4xl transition-transform duration-300 ${
           visible ? "translate-y-0" : "-translate-y-full"
-        } dark:bg-dark-bg`}
+        } `}
       >
         {" "}
         <div className="navbar-start">

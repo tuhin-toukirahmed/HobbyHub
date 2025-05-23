@@ -39,17 +39,16 @@ const Footer = () => {  return (
             <span className="ml-2 text-xl font-bold tracking-wide dark:text-dark-text light:text-light-text ">
               <h1>HobbyHub</h1>
             </span>
-          </a>
-          <div className="mt-6 lg:max-w-sm">
+          </a>          <div className="mt-6 lg:max-w-sm">
             <p className="text-sm dark:text-dark-text light:text-light-text">
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-              accusantium doloremque laudantium, totam rem aperiam.
+              HobbyHub connects passionate individuals through shared interests and activities. 
+              Find your community and explore new hobbies with like-minded enthusiasts.
             </p>
             <p className="mt-4 text-sm dark:text-dark-text light:text-light-text ">
-              Eaque ipsa quae ab illo inventore veritatis et quasi architecto
-              beatae vitae dicta sunt explicabo.
+              Join groups, attend events, and build meaningful connections through the 
+              things you love most.
             </p>
-          </div>        </div>
+          </div></div>
         <div 
           className="space-y-2 text-sm reveal-right"
           data-scroll
@@ -129,10 +128,9 @@ const Footer = () => {  return (
                 <path d="M22,0H2C0.895,0,0,0.895,0,2v20c0,1.105,0.895,2,2,2h11v-9h-3v-4h3V8.413c0-3.1,1.893-4.788,4.659-4.788 c1.325,0,2.463,0.099,2.795,0.143v3.24l-1.918,0.001c-1.504,0-1.795,0.715-1.795,1.763V11h4.44l-1,4h-3.44v9H22c1.105,0,2-0.895,2-2 V2C24,0.895,23.105,0,22,0z"></path>
               </svg>
             </a>
-          </div>
-          <p className="mt-4 text-sm dark:text-dark-text light:text-light-text">
-            Bacon ipsum dolor amet short ribs pig sausage prosciutto chicken
-            spare ribs salami.
+          </div>          <p className="mt-4 text-sm dark:text-dark-text light:text-light-text">
+            Follow us on social media for the latest group activities, hobby trends, 
+            and community highlights.
           </p>
         </div>      </div>
       <div 
@@ -140,9 +138,8 @@ const Footer = () => {  return (
         data-scroll
         data-scroll-class="is-inview"
         data-scroll-delay="0.3"
-      >
-        <p className="text-sm text-gray-600">
-          © Copyright 2023 HobbyHub Inc. All rights reserved.
+      >        <p className="text-sm text-gray-600">
+          © Copyright 2025 HobbyHub Inc. All rights reserved.
         </p>
         <ul className="flex flex-col mb-3 space-y-2 lg:mb-0 sm:space-y-0 sm:space-x-5 sm:flex-row">
           <li>
