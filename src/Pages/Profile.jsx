@@ -164,7 +164,7 @@ const Profile = () => {
     const fetchProfile = async () => {
       if (!user?.email) return;
       try {
-        const res = await fetch(`http://localhost:3000/users/${user.email}`);
+        const res = await fetch(`https://hobby-hub-server-site-j2lopyrl4-tuhin-deks-projects.vercel.app/users/${user.email}`);
         if (!res.ok) throw new Error("Failed to fetch profile");
         const data = await res.json();
         // Defensive: merge backend data with current form (for missing fields)
@@ -185,7 +185,7 @@ const Profile = () => {
       setGroupsLoading(true);
       setGroupsError("");
       try {
-        const res = await fetch(`http://localhost:3000/mygroups/${encodeURIComponent(user.email)}`);
+        const res = await fetch(`https://hobby-hub-server-site-j2lopyrl4-tuhin-deks-projects.vercel.app/mygroups/${encodeURIComponent(user.email)}`);
         const data = await res.json();
         // Only show groups where group.email matches user.email
         setUserGroups(Array.isArray(data) ? data.filter(g => g.email === user.email) : []);

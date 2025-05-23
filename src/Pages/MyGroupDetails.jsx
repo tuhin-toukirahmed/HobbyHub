@@ -34,7 +34,7 @@ const MyGroupDetails = () => {
       setLoading(true);
       setError("");
       try {
-        const res = await fetch(`http://localhost:3000/mygroups/details/${encodeURIComponent(groupId)}`);
+        const res = await fetch(`https://hobby-hub-server-site-j2lopyrl4-tuhin-deks-projects.vercel.app/mygroups/details/${encodeURIComponent(groupId)}`);
         if (!res.ok) {
           setGroup(null);
         } else {
@@ -68,7 +68,7 @@ const MyGroupDetails = () => {
     if (window.confirm('Are you sure you want to delete this group?')) {
       try {
         const groupIdToDelete = group._id || group.id || group.groupId;
-        const res = await fetch(`http://localhost:3000/mygroups/${encodeURIComponent(groupIdToDelete)}/${encodeURIComponent(email)}`, {
+        const res = await fetch(`https://hobby-hub-server-site-j2lopyrl4-tuhin-deks-projects.vercel.app/mygroups/${encodeURIComponent(groupIdToDelete)}/${encodeURIComponent(email)}`, {
           method: 'DELETE',
         });
         if (!res.ok) {

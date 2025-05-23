@@ -13,7 +13,7 @@ const Mygroups = () => {
       setError("");
       try {
         // Fetch groups for the current user's email
-        const res = await fetch(`http://localhost:3000/mygroups/${encodeURIComponent(user?.email || "")}`);
+        const res = await fetch(`https://hobby-hub-server-site-j2lopyrl4-tuhin-deks-projects.vercel.app/mygroups/${encodeURIComponent(user?.email || "")}`);
         const data = await res.json();
         // Only show groups where group.email matches user.email
         const filtered = Array.isArray(data) ? data.filter(g => g.email === user?.email) : [];

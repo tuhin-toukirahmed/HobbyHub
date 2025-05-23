@@ -41,7 +41,7 @@ const GroupDetails = () => {
     const checkJoined = async () => {
       if (!userEmail || !group?.groupName) return;
       try {
-        const res = await fetch(`http://localhost:3000/joined-groups/${encodeURIComponent(userEmail)}`);
+        const res = await fetch(`https://hobby-hub-server-site-j2lopyrl4-tuhin-deks-projects.vercel.app/joined-groups/${encodeURIComponent(userEmail)}`);
         if (!res.ok) return;
         const data = await res.json();
         if (Array.isArray(data) && data.some(g => g.groupName === group.groupName)) {
@@ -71,7 +71,7 @@ const GroupDetails = () => {
         joinedAt: new Date().toISOString(),
         email: userEmail,
       };
-      const res = await fetch("http://localhost:3000/joined-groups", {
+      const res = await fetch("https://hobby-hub-server-site-j2lopyrl4-tuhin-deks-projects.vercel.app/joined-groups", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(joinedGroupData),
@@ -93,13 +93,13 @@ const GroupDetails = () => {
     setJoinSuccess("");
     try {
       // Fetch the joined group for this user and group name to get its _id
-      const resFind = await fetch(`http://localhost:3000/joined-groups/${encodeURIComponent(userEmail)}`);
+      const resFind = await fetch(`https://hobby-hub-server-site-j2lopyrl4-tuhin-deks-projects.vercel.app/joined-groups/${encodeURIComponent(userEmail)}`);
       if (!resFind.ok) throw new Error("Failed to find joined group");
       const data = await resFind.json();
       const joinedGroup = Array.isArray(data) ? data.find(g => g.groupName === group.groupName) : null;
       if (!joinedGroup || !joinedGroup._id) throw new Error("Joined group not found");
       // Now delete by _id and email
-      const res = await fetch(`http://localhost:3000/joined-groups/${joinedGroup._id}/${encodeURIComponent(userEmail)}`, {
+      const res = await fetch(`https://hobby-hub-server-site-j2lopyrl4-tuhin-deks-projects.vercel.app/joined-groups/${joinedGroup._id}/${encodeURIComponent(userEmail)}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Failed to remove group");

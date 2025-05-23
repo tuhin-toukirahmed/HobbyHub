@@ -180,19 +180,13 @@ const Home = () => {  const scrollRef = useRef(null);
           <Faq />
         </div>
           
-        {/* Brands section with parallax effect */}
-        <div 
-          className={`${theme === 'light' ? 'bg-white' : 'bg-gray-900'} py-4`} 
+        {/* Brands section with parallax effect */}        <div 
+          className={`${theme === 'light' ? 'bg-white' : 'bg-gray-900'} py-4 mb-8`} 
           data-scroll-section
           data-scroll
           data-scroll-repeat="true"
         >
           <Brands/>
-        </div>
-        
-        
-        <div className={`${theme === 'light' ? 'bg-white' : 'bg-gray-900'}`} data-scroll-section>
-          <Footer />
         </div>
       </div>
     </div>

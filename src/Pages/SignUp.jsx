@@ -38,7 +38,7 @@ const SignUp = () => {
     try {
       await signUp(form.email, form.password);
       // Send user data to server after successful signup
-      await fetch("http://localhost:3000/users", {
+      await fetch("https://hobby-hub-server-site-j2lopyrl4-tuhin-deks-projects.vercel.app/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -118,7 +118,7 @@ const SignUp = () => {
               const user = await signInWithGoogle();
               // Send user data to server after Google signup
               if (user && user.user) {
-                await fetch("http://localhost:3000/users", {
+                await fetch("https://hobby-hub-server-site-j2lopyrl4-tuhin-deks-projects.vercel.app/users", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({
