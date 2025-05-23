@@ -14,7 +14,7 @@ const JoinedGroups = () => {
       setLoading(true);
       setError("");
       try {
-        const res = await fetch(`https://hobby-hub-server-site-j2lopyrl4-tuhin-deks-projects.vercel.app/joined-groups/${encodeURIComponent(user?.email || "")}`);
+        const res = await fetch(`https://hobby-hub-server-site.vercel.app/joined-groups/${encodeURIComponent(user?.email || "")}`);
         if (!res.ok) throw new Error("Failed to fetch joined groups");
         const data = await res.json();
         setGroups(Array.isArray(data) ? data : []);

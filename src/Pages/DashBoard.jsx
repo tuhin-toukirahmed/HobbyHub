@@ -24,7 +24,7 @@ const DashBoard = () => {
     setError("");
     try {
       const res = await fetch(
-        `https://hobby-hub-server-site-j2lopyrl4-tuhin-deks-projects.vercel.app/mygroups/${encodeURIComponent(
+        `https://hobby-hub-server-site.vercel.app/mygroups/${encodeURIComponent(
           user?.email || ""
         )}`
       );
@@ -44,7 +44,7 @@ const DashBoard = () => {
     setError("");
     try {
       // Updated to use the mygroups endpoint instead of groups
-      const res = await fetch("https://hobby-hub-server-site-j2lopyrl4-tuhin-deks-projects.vercel.app/mygroups");
+      const res = await fetch("https://hobby-hub-server-site.vercel.app/mygroups");
       const data = await res.json();
       setMyGroups(Array.isArray(data) ? data : []);
       setActiveSection("groups");
@@ -242,7 +242,7 @@ const JoinedGroupsCardGrid = () => {
       setError("");
       try {
         const res = await fetch(
-          `https://hobby-hub-server-site-j2lopyrl4-tuhin-deks-projects.vercel.app/joined-groups/${encodeURIComponent(
+          `https://hobby-hub-server-site.vercel.app/joined-groups/${encodeURIComponent(
             user?.email || ""
           )}`
         );

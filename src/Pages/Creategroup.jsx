@@ -37,7 +37,7 @@ const Creategroup = () => {
     try {
       // Use POST /mygroups (not /mygroups/:email) for group creation
       const res = await fetch(
-        "https://hobby-hub-server-site-j2lopyrl4-tuhin-deks-projects.vercel.app/mygroups",
+        "https://hobby-hub-server-site.vercel.app/mygroups",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

@@ -108,7 +108,7 @@ const Settings = () => {
       });
       // Update user data in backend by email
       await fetch(
-        `https://hobby-hub-server-site-j2lopyrl4-tuhin-deks-projects.vercel.app/users/${encodeURIComponent(form.email)}`,
+        `https://hobby-hub-server-site.vercel.app/users/${encodeURIComponent(form.email)}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

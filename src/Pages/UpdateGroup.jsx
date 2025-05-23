@@ -35,7 +35,7 @@ const UpdateGroup = () => {
       setLoading(true);
       setError("");
       try {
-        const res = await fetch(`https://hobby-hub-server-site-j2lopyrl4-tuhin-deks-projects.vercel.app/mygroups/details/${encodeURIComponent(groupId)}`);
+        const res = await fetch(`https://hobby-hub-server-site.vercel.app/mygroups/details/${encodeURIComponent(groupId)}`);
         if (!res.ok) throw new Error("Failed to fetch group details");
         const data = await res.json();
         if (!data || !data._id) throw new Error("Group not found");
@@ -60,7 +60,7 @@ const UpdateGroup = () => {
     setError("");
     try {
       const { _id, ...updateData } = form;
-      const res = await fetch(`https://hobby-hub-server-site-j2lopyrl4-tuhin-deks-projects.vercel.app/mygroups/${encodeURIComponent(groupId)}/${encodeURIComponent(email)}`, {
+      const res = await fetch(`https://hobby-hub-server-site.vercel.app/mygroups/${encodeURIComponent(groupId)}/${encodeURIComponent(email)}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
