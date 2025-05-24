@@ -234,6 +234,14 @@ const GroupDetails = () => {
           {joinError && <div className="text-red-500 mt-2 dark:text-red-400">{joinError}</div>}
         </>
       )}
+      {!isAvailable && (
+        <button
+          className="w-full bg-gray-300 text-gray-500 font-bold py-3 rounded text-lg cursor-not-allowed"
+          disabled
+        >
+          Not available
+        </button>
+      )}
     </div>
   );
 };

@@ -4,6 +4,8 @@ import { useNavigate } from "react-router";
 import LocomotiveScroll from "locomotive-scroll";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Typewriter } from 'react-simple-typewriter';
+
 gsap.registerPlugin(ScrollTrigger);
 
 const Allgroups = () => {
@@ -77,7 +79,20 @@ const Allgroups = () => {
 
   return (
     <div ref={scrollRef} data-scroll-container className="sm:max-w-xl md:max-w-full lg:max-w-screen-xl mx-auto mt-20">
-      <h1 ref={h1Ref} className="text-3xl font-bold mb-6">Find a Group for Your Hobby</h1>
+      <h1 ref={h1Ref} className="text-3xl font-bold mb-6">
+        Find a Group for{' '}
+        <span style={{ color: '#10b981' }}>
+          <Typewriter
+            words={['Photography', 'Cooking', 'Painting', 'Cycling', 'Gardening', 'Music', 'Coding', 'Traveling']}
+            loop={0}
+            cursor
+            cursorStyle='|'
+            typeSpeed={80}
+            deleteSpeed={50}
+            delaySpeed={1200}
+          />
+        </span>
+      </h1>
       <div className="flex gap-3 mb-8 flex-wrap">
        </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6">
