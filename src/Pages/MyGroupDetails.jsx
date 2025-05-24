@@ -120,32 +120,32 @@ const MyGroupDetails = () => {
         className="w-full h-64 object-cover rounded-lg mb-6"
       />
       <div>
-        <h1 className="text-3xl font-bold mb-2">{group.groupName}</h1>
+        <h1 className="text-3xl font-bold mb-2 text-gray-900">{group.groupName}</h1>
         <div className="text-gray-500 mb-4">{group.hobbyCategory}</div>
-        <div className="mb-2">Hosted by: {host}, {weeks} weeks, {members} members</div>
+        <div className="mb-2 text-gray-800">Hosted by: {host}, {weeks} weeks, {members} members</div>
       </div>
       <div className="mb-6">
-        <h2 className="font-semibold mb-1">About this class</h2>
+        <h2 className="font-semibold mb-1 text-gray-900">About this class</h2>
         <div className="mb-6 text-gray-700 dark:text-gray-300">{group.description}</div>
       </div>
       <div className="mb-6">
-        <h2 className="font-semibold mb-2">When</h2>
+        <h2 className="font-semibold mb-2 text-gray-900">When</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4 text-sm">
           <div>
-            <div className="text-gray-500">Date</div>
-            <div>{date}</div>
+            <div className=" text-gray-800">Date</div>
+            <div className="text-gray-900">{date}</div>
           </div>
           <div>
             <div className="text-gray-500">Time</div>
-            <div>10:00am - 12:00pm</div>
+            <div className="text-gray-900">10:00am - 12:00pm</div>
           </div>
           <div>
             <div className="text-gray-500">Duration</div>
-            <div>2 hours</div>
+            <div className="text-gray-900">2 hours</div>
           </div>
           <div>
             <div className="text-gray-500">Location</div>
-            <div>{location}</div>
+            <div className="text-gray-900">{location}</div>
           </div>
         </div>
       </div>
@@ -153,28 +153,28 @@ const MyGroupDetails = () => {
         View map
       </button>
       <div className="mb-6">
-        <h2 className="font-semibold mb-2">Cost</h2>
+        <h2 className="font-semibold mb-2 text-gray-900">Cost</h2>
         <div className="grid grid-cols-2 gap-4 mb-6 text-sm">
           <div>
             <div className="text-gray-500">Orientation fee</div>
-            <div>${orientationFee}</div>
+            <div className="text-gray-900">${orientationFee}</div>
           </div>
         </div>
       </div>
       <div className="mb-6">
-        <h2 className="font-semibold mb-2">Policies</h2>
+        <h2 className="font-semibold mb-2 text-gray-900">Policies</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 text-sm">
           <div>
             <div className="text-gray-500">Refund policy</div>
-            <div>{refundPolicy}</div>
+            <div className="text-gray-900">{refundPolicy}</div>
           </div>
           <div>
             <div className="text-gray-500">Cancellation policy</div>
-            <div>{cancelPolicy}</div>
+            <div className="text-gray-900">{cancelPolicy}</div>
           </div>
           <div>
             <div className="text-gray-500">Age requirement</div>
-            <div>Minimum age is {minAge}</div>
+            <div className="text-gray-900">Minimum age is {minAge}</div>
           </div>
         </div>
       </div>

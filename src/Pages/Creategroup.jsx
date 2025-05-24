@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useAuth } from "../Provider/useAuth";
 import { DataContext } from "../Provider/DataContext";
 
@@ -14,7 +14,7 @@ const Creategroup = () => {
     maxMembers: "",
     startDate: "",
     imageUrl: "",
-    host: "",
+    host: user?.displayName || "",
     orientationFee: "",
     location: "",
     date: "",
@@ -25,8 +25,17 @@ const Creategroup = () => {
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
 
+   useEffect(() => {
+    setForm((prev) => ({
+      ...prev,
+      host: user?.displayName || "",
+      email: userEmail || user?.email || "",
+    }));
+  }, [user, userEmail]);
   const handleChange = (e) => {
     const { name, value } = e.target;
+    // Don't allow changing the host field
+    if (name === 'host') return;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -58,7 +67,9 @@ const Creategroup = () => {
       </h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">Group Name</label>
+          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">
+            Group Name
+          </label>
           <input
             type="text"
             name="groupName"
@@ -70,7 +81,9 @@ const Creategroup = () => {
           />
         </div>
         <div>
-          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">Hobby Category</label>
+          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">
+            Hobby Category
+          </label>
           <input
             type="text"
             name="hobbyCategory"
@@ -82,7 +95,9 @@ const Creategroup = () => {
           />
         </div>
         <div>
-          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">Description</label>
+          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">
+            Description
+          </label>
           <textarea
             name="description"
             value={form.description}
@@ -92,20 +107,11 @@ const Creategroup = () => {
             placeholder="Describe your group"
           />
         </div>
+
         <div>
-          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">Meeting Location</label>
-          <input
-            type="text"
-            name="meetingLocation"
-            value={form.meetingLocation}
-            onChange={handleChange}
-            required
-            className="input input-bordered w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-400"
-            placeholder="e.g. Urban Art Space, 78 Creative Lane"
-          />
-        </div>
-        <div>
-          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">Max Members</label>
+          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">
+            Max Members
+          </label>
           <input
             type="number"
             name="maxMembers"
@@ -118,7 +124,9 @@ const Creategroup = () => {
           />
         </div>
         <div>
-          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">Start Date</label>
+          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">
+            Start Date
+          </label>
           <input
             type="date"
             name="startDate"
@@ -129,7 +137,9 @@ const Creategroup = () => {
           />
         </div>
         <div>
-          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">Image URL</label>
+          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">
+            Image URL
+          </label>
           <input
             type="url"
             name="imageUrl"
@@ -140,20 +150,11 @@ const Creategroup = () => {
             placeholder="Paste an image URL"
           />
         </div>
+       
         <div>
-          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">Host</label>
-          <input
-            type="text"
-            name="host"
-            value={form.host}
-            onChange={handleChange}
-            required
-            className="input input-bordered w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-400"
-            placeholder="e.g. Ava Martinez"
-          />
-        </div>
-        <div>
-          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">Orientation Fee</label>
+          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">
+            Orientation Fee
+          </label>
           <input
             type="number"
             name="orientationFee"
@@ -166,7 +167,9 @@ const Creategroup = () => {
           />
         </div>
         <div>
-          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">Location</label>
+          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">
+            Location
+          </label>
           <input
             type="text"
             name="location"
@@ -178,7 +181,9 @@ const Creategroup = () => {
           />
         </div>
         <div>
-          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">Date (e.g. '2 days left')</label>
+          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">
+            Date (e.g. '2 days left')
+          </label>
           <input
             type="text"
             name="date"
@@ -190,7 +195,9 @@ const Creategroup = () => {
           />
         </div>
         <div>
-          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">Weeks</label>
+          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">
+            Weeks
+          </label>
           <input
             type="number"
             name="weeks"
@@ -203,7 +210,9 @@ const Creategroup = () => {
           />
         </div>
         <div>
-          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">Members</label>
+          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">
+            Members
+          </label>
           <input
             type="number"
             name="members"
@@ -215,8 +224,26 @@ const Creategroup = () => {
             placeholder="e.g. 18"
           />
         </div>
+         <div>
+          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">
+            Host
+          </label>
+          <input
+            type="text"
+            name="host"
+            value={form.host}
+            readOnly
+            className="input input-bordered w-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-400"
+            placeholder="Automatically set to your name"
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            Host name is automatically set to your name 
+          </p>
+        </div>
         <div>
-          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">Your Email</label>
+          <label className="block mb-1 font-semibold text-gray-800 dark:text-gray-200">
+            Your Email
+          </label>
           <input
             type="email"
             name="email"
@@ -231,8 +258,14 @@ const Creategroup = () => {
         >
           Create Group
         </button>
-        {error && <div className="text-red-500 mt-2 dark:text-red-400">{error}</div>}
-        {success && <div className="text-green-600 mt-2 dark:text-green-400">{success}</div>}
+        {error && (
+          <div className="text-red-500 mt-2 dark:text-red-400">{error}</div>
+        )}
+        {success && (
+          <div className="text-green-600 mt-2 dark:text-green-400">
+            {success}
+          </div>
+        )}
       </form>
     </div>
   );

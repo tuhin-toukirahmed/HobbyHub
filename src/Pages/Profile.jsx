@@ -11,8 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Profile = () => {
   const { user } = useAuth();
-  console.log(user);
-  const [emailSent, setEmailSent] = useState(user?.emailVerified || false);
+   const [emailSent, setEmailSent] = useState(user?.emailVerified || false);
   const [activeTab, setActiveTab] = useState("about");
   const [form, setForm] = useState({
     username: user?.displayName?.toLowerCase().replace(/\s+/g, "-") || "username",
@@ -380,8 +379,8 @@ const Profile = () => {
                                 className="w-20 h-12 object-cover rounded"
                               />
                             </td>
-                            <td className="px-4 py-2 font-semibold">{group.groupName}</td>
-                            <td className="px-4 py-2">{group.startDate || group.date || "-"}</td>
+                            <td className="px-4 py-2 font-semibold text-gray-800">{group.groupName}</td>
+                            <td className="px-4 py-2 text-gray-600">{group.startDate || group.date || "-"}</td>
                             <td className="px-4 py-2">
                               <button className="btn btn-xs btn-warning mr-2" onClick={() => handleUpdate(group)}>Update</button>
                                
