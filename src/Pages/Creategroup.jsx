@@ -1,11 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useAuth } from "../Provider/useAuth";
 import { DataContext } from "../Provider/DataContext";
+import { useNavigate } from "react-router";
 
 const Creategroup = () => {
   const { user } = useAuth();
   const { userEmail } = useContext(DataContext);
   const email = userEmail || user?.email || "";
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     groupName: "",
     hobbyCategory: "",
@@ -25,7 +27,7 @@ const Creategroup = () => {
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
 
-   useEffect(() => {
+  useEffect(() => {
     setForm((prev) => ({
       ...prev,
       host: user?.displayName || "",
@@ -55,6 +57,11 @@ const Creategroup = () => {
       );
       if (!res.ok) throw new Error("Failed to create group");
       setSuccess("Group created successfully!");
+      
+      // Navigate to dashboard after success
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1500); // Short delay to show success message
     } catch (err) {
       setError(err.message);
     }

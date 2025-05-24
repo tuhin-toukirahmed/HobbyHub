@@ -1,22 +1,31 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useAuth } from "../Provider/useAuth";
 import { Tooltip } from "react-tooltip";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
   const { logOut, user } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const isActive = (path) => {
     return location.pathname === path;
   };
 
   const handleLogout = async () => {
+    // Add confirmation dialog
+    const confirmed = window.confirm("Are you sure you want to log out?");
+    if (!confirmed) return;
+    
     try {
       await logOut();
-      window.alert("Logged out successfully!");
+      // Replace alert with toast
+      toast.success("Logged out successfully!");
+      // Optionally navigate to home page
+      navigate("/");
     } catch (err) {
-      window.alert("Logout failed: " + err.message);
+      toast.error("Logout failed: " + (err.message || "Unknown error"));
     }
   };
 
