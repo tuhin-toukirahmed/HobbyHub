@@ -43,8 +43,9 @@ const DashBoard = () => {
     setLoading(true);
     setError("");
     try {
-      // Updated to use the mygroups endpoint instead of groups
-      const res = await fetch("https://hobby-hub-server-site.vercel.app/mygroups");
+       const res = await fetch(
+        "https://hobby-hub-server-site.vercel.app/mygroups"
+      );
       const data = await res.json();
       setMyGroups(Array.isArray(data) ? data : []);
       setActiveSection("groups");
@@ -80,18 +81,15 @@ const DashBoard = () => {
   return (
     <div className="min-h-screen p-4 md:p-6 bg-light-section dark:bg-dark-bg transition-colors duration-300 mt-16 sm:max-w-xl md:max-w-full lg:max-w-screen-xl mx-auto">
       <div className="flex flex-row gap-4 md:gap-6 h-[calc(100vh-7rem)]">
-        {/* Sidebar - now stays on side for all screen sizes */}
-        <aside
+         <aside
           ref={sidebarRef}
           className="w-16 md:w-64 h-full bg-gradient-to-b from-light-card to-light-bg/90 dark:from-dark-surface dark:to-dark-bg/90 flex flex-col justify-between py-4 md:py-8 px-1 md:px-4 transition-colors duration-300 shadow-xl z-10 rounded-2xl border border-gray-100/50 dark:border-gray-700/50"
         >
           <div className="flex flex-col items-center md:items-start gap-3 md:mb-8">
-            {/* Logo or icon always visible */}
-            <div className="w-10 h-10 bg-primary/20 dark:bg-primary/30 rounded-lg flex items-center justify-center text-primary dark:text-primary-light">
+             <div className="w-10 h-10 bg-primary/20 dark:bg-primary/30 rounded-lg flex items-center justify-center text-primary dark:text-primary-light">
               <MdDashboardCustomize className="text-xl" />
             </div>
-            {/* Dashboard label: only show on md+ screens */}
-            <span className="hidden md:block font-semibold text-light-text dark:text-dark-text">
+             <span className="hidden md:block font-semibold text-light-text dark:text-dark-text">
               Dashboard
             </span>
           </div>
@@ -134,8 +132,7 @@ const DashBoard = () => {
           </div>
         </aside>
 
-        {/* Main Panel */}
-        <main
+         <main
           ref={mainRef}
           data-scroll-container
           className="flex-1 px-4 sm:px-6 md:px-8 lg:px-12 py-6 md:py-8 bg-light-bg dark:bg-dark-bg overflow-y-auto rounded-2xl shadow-md border border-gray-100/50 dark:border-gray-700/50"
@@ -168,6 +165,7 @@ const DashBoard = () => {
                     className="bg-white rounded-xl shadow p-4 flex flex-col items-start hover:shadow-lg transition cursor-pointer"
                     onClick={() => navigate(`/my-group-details/${group._id}`)}
                   >
+                    {" "}
                     <img
                       src={
                         group.imageUrl ||
@@ -180,7 +178,7 @@ const DashBoard = () => {
                       {group.groupName}
                     </div>
                     <div className="text-gray-400 text-xs mb-1">
-                      {group.hobbyCategory}
+                    Host: {group.host || "Unknown Host"}
                     </div>
                   </div>
                 ))}
@@ -276,8 +274,7 @@ const JoinedGroupsCardGrid = () => {
       <div className="text-center text-gray-400 dark:text-gray-500 col-span-4">
         No joined groups found.
       </div>
-    );
-  return groups.map((group, idx) => (
+    );  return groups.map((group, idx) => (
     <div
       key={group._id || group.groupName + idx}
       className="bg-white   rounded-xl shadow p-4 flex flex-col items-start hover:shadow-lg transition cursor-pointer"
@@ -293,9 +290,7 @@ const JoinedGroupsCardGrid = () => {
       <div className="font-semibold text-lg mb-1 text-gray-800  ">
         {group.groupName}
       </div>
-      <div className="text-gray-400   text-xs mb-1">
-        {group.hobbyCategory}
-      </div>
+      <div className="text-gray-400   text-xs mb-1">Host: {group.host || "Unknown Host"}</div>
     </div>
   ));
 };
