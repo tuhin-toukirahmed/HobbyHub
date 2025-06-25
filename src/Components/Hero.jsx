@@ -30,9 +30,9 @@ const Hero = () => {
   }, []);
   
   return (
-    <div className="flex flex-col justify-center items-start min-h-[70vh] sm:max-w-xl md:max-w-full lg:max-w-screen-xl mx-auto mt-20">
-      <div className="overflow-hidden">
-        <h1 className="text-5xl md:text-9xl font-bold text-white mb-4 overflow-hidden">
+    <div className="flex flex-col justify-center items-start min-h-[70vh] sm:max-w-xl md:max-w-full lg:max-w-screen-xl mx-auto mt-10 ">
+      <div className="overflow-hidden px-5">
+        <h1 className="text-4xl md:text-9xl font-bold text-white mb-4 overflow-hidden">
           <div ref={line1Ref} className="leading-tight text-5xl md:text-7xl lg:text-9xl">
             Find your people
           </div>
@@ -47,7 +47,7 @@ const Hero = () => {
         <div className="mt-12 reveal" data-scroll data-scroll-class="is-inview">
           <button 
           onClick={() => window.location.href = '/all-groups'}
-          className="bg-blue-600 hover:bg-blue-700 text-white text-xl font-semibold px-10 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+          className="bg-blue-600 hover:bg-blue-700 text-white text-xl font-semibold px-10 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 cursor-pointer">
             Join the Community
           </button>
         </div>

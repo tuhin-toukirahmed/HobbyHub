@@ -6,20 +6,20 @@ import {
   useTransform,
 } from "framer-motion";
 
-// Add theme detection
 const useTheme = () => {
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState("light");
 
   useEffect(() => {
-    // Get the current theme when component mounts
-    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    const currentTheme =
+      document.documentElement.getAttribute("data-theme") || "light";
     setTheme(currentTheme);
 
-    // Create a MutationObserver to watch for theme changes
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
-        if (mutation.attributeName === 'data-theme') {
-          setTheme(document.documentElement.getAttribute('data-theme') || 'light');
+        if (mutation.attributeName === "data-theme") {
+          setTheme(
+            document.documentElement.getAttribute("data-theme") || "light"
+          );
         }
       });
     });
@@ -45,6 +45,8 @@ const IMGS = [
   "https://plus.unsplash.com/premium_photo-1664910706524-e783eed89e71?q=80&w=3869&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   "https://images.unsplash.com/photo-1503788311183-fa3bf9c4bc32?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   "https://images.unsplash.com/photo-1585970480901-90d6bb2a48b5?q=80&w=3774&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://cdn.pixabay.com/photo/2023/04/24/03/16/camping-7947055_1280.jpg?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://cdn.pixabay.com/photo/2024/10/07/10/28/colosseum-9102592_1280.png?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 ];
 
 const RollingGallery = ({
@@ -56,27 +58,24 @@ const RollingGallery = ({
   const theme = useTheme(); // Get current theme
 
   const [isScreenSizeSm, setIsScreenSizeSm] = useState(
-    typeof window !== 'undefined' ? window.innerWidth <= 640 : false
+    typeof window !== "undefined" ? window.innerWidth <= 640 : false
   );
-  
+
   useEffect(() => {
     const handleResize = () => setIsScreenSizeSm(window.innerWidth <= 640);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // 3D geometry
-  const cylinderWidth = isScreenSizeSm ? 1100 : 1800;
+   const cylinderWidth = isScreenSizeSm ? images.length * 110 : images.length * 180;
   const faceCount = images.length;
   const faceWidth = (cylinderWidth / faceCount) * 1.5;
   const radius = cylinderWidth / (2 * Math.PI);
 
-  // Framer Motion
   const dragFactor = 0.05;
   const rotation = useMotionValue(0);
   const controls = useAnimation();
 
-  // Convert rotation -> 3D transform
   const transform = useTransform(
     rotation,
     (val) => `rotate3d(0,1,0,${val}deg)`
@@ -100,7 +99,6 @@ const RollingGallery = ({
     } else {
       controls.stop();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoplay]);
 
   const handleUpdate = (latest) => {
@@ -128,7 +126,7 @@ const RollingGallery = ({
       controls.stop();
     }
   };
-  
+
   const handleMouseLeave = () => {
     if (autoplay && pauseOnHover) {
       const currentAngle = rotation.get();
@@ -136,21 +134,27 @@ const RollingGallery = ({
     }
   };
   return (
-    <div className={`relative h-[400px] w-full overflow-hidden ${theme === 'light' ? 'bg-white' : 'bg-gray-900'}`}>
+    <div
+      className={`relative h-[400px] w-full overflow-hidden ${
+        theme === "light" ? "bg-white" : "bg-gray-900"
+      }`}
+    >
       <div
         className="absolute top-0 left-0 h-full w-[80px] z-10"
         style={{
-          background: theme === 'light' 
-            ? "linear-gradient(to left, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)"
-            : "linear-gradient(to left, rgba(17,24,39,0) 0%, rgba(17,24,39,1) 100%)",
+          background:
+            theme === "light"
+              ? "linear-gradient(to left, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)"
+              : "linear-gradient(to left, rgba(17,24,39,0) 0%, rgba(17,24,39,1) 100%)",
         }}
       />
       <div
         className="absolute top-0 right-0 h-full w-[80px] z-10"
         style={{
-          background: theme === 'light'
-            ? "linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)"
-            : "linear-gradient(to right, rgba(17,24,39,0) 0%, rgba(17,24,39,1) 100%)",
+          background:
+            theme === "light"
+              ? "linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)"
+              : "linear-gradient(to right, rgba(17,24,39,0) 0%, rgba(17,24,39,1) 100%)",
         }}
       />
 
@@ -178,15 +182,20 @@ const RollingGallery = ({
               className="group absolute flex h-fit items-center justify-center p-[8%] [backface-visibility:hidden] md:p-[6%]"
               style={{
                 width: `${faceWidth}px`,
-                transform: `rotateY(${(360 / faceCount) * i
-                  }deg) translateZ(${radius}px)`,
-              }}            >              <img
+                transform: `rotateY(${
+                  (360 / faceCount) * i
+                }deg) translateZ(${radius}px)`,
+              }}
+            >
+              <img
                 src={url}
                 alt="gallery"
-                className={`pointer-events-none h-[120px] w-[300px] rounded-[15px] object-cover
-                           ${theme === 'light' 
-                              ? 'shadow-[0_5px_15px_rgba(0,0,0,0.2)]' 
-                              : 'shadow-[0_5px_15px_rgba(0,0,0,0.6)]'
+                onClick={() => window.open(url, '_blank', 'noopener,noreferrer')}
+                className={`pointer-events-auto cursor-pointer h-[120px] w-[300px] rounded-[15px] object-cover
+                           ${
+                             theme === "light"
+                               ? "shadow-[0_5px_15px_rgba(0,0,0,0.2)]"
+                               : "shadow-[0_5px_15px_rgba(0,0,0,0.6)]"
                            }
                            transition-transform duration-300 ease-out group-hover:scale-105
                            sm:h-[100px] sm:w-[220px]`}

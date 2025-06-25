@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useLocation } from "react-router";
 import { useAuth } from "../Provider/useAuth";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { toast } from "react-hot-toast";
@@ -16,6 +16,8 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const validatePassword = (password) => {
     if (password.length < 6) return "Password must be at least 6 characters.";
@@ -53,7 +55,7 @@ const SignUp = () => {
         }),
       });
       toast.success("Registration successful!");
-      navigate("/");
+      navigate(from, { replace: true });
     } catch (err) {
       setError(err.message);
       toast.error(err.message);
@@ -152,7 +154,7 @@ const SignUp = () => {
                 });
               }
               toast.success("Continue with Google successful!");
-              navigate("/");
+              navigate(from, { replace: true });
             } catch (err) {
               setError(err.message);
               toast.error(err.message);

@@ -14,16 +14,13 @@ const Navbar = () => {
   };
 
   const handleLogout = async () => {
-    // Add confirmation dialog
-    const confirmed = window.confirm("Are you sure you want to log out?");
+     const confirmed = window.confirm("Are you sure you want to log out?");
     if (!confirmed) return;
 
     try {
       await logOut();
-      // Replace alert with toast
-      toast.success("Logged out successfully!");
-      // Optionally navigate to home page
-      navigate("/");
+       toast.success("Logged out successfully!");
+       navigate("/");
     } catch (err) {
       toast.error("Logout failed: " + (err.message || "Unknown error"));
     }
@@ -52,7 +49,7 @@ const Navbar = () => {
       {" "}
       <div
         ref={navbarRef}
-        className={`navbar bg-light-bg sm:max-w-xl md:max-w-full lg:max-w-screen-xl mx-auto fixed left-1/2 top-0 z-50 transform -translate-x-1/2 w-full max-w-4xl transition-transform duration-300 ${
+        className={`navbar bg-light-bg sm:max-w-xl md:max-w-full lg:max-w-screen-xl mx-auto fixed left-1/2 top-0 z-50 transform -translate-x-1/2 w-full max-w-4xl transition-transform duration-300 backdrop-blur-xs rounded-xl ${
           visible ? "translate-y-0" : "-translate-y-full"
         } `}
       >
@@ -246,8 +243,8 @@ const Navbar = () => {
                 >
                   {user ? (
                     <>
-                      <li className={` ${isActive("/settings") ? "font-bold text-blue-600" : ""}`}>
-                        <Link to="/settings" className=" border-b-2 border-blue-500">Settings & Accounts</Link>
+                      <li className="border-b-1 border-gray-300 py-1">
+                        <Link to="/settings" className={` ${isActive("/settings") ? "font-bold text-blue-600 border-b-2 border-blue-500" : ""}`} >Settings & Accounts</Link>
                       </li>
                       <li>
                         <button onClick={handleLogout}>Logout</button>

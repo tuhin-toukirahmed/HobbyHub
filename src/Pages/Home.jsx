@@ -15,13 +15,11 @@ const Home = () => {
   const [theme, setTheme] = useState("light");
 
   useEffect(() => {
-    // Get the current theme when component mounts
-    const currentTheme =
+     const currentTheme =
       document.documentElement.getAttribute("data-theme") || "light";
     setTheme(currentTheme);
 
-    // Create a MutationObserver to watch for theme changes
-    const observer = new MutationObserver((mutations) => {
+     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.attributeName === "data-theme") {
           setTheme(
@@ -31,31 +29,29 @@ const Home = () => {
       });
     });
 
-    // Start observing the document with the configured parameters
-    observer.observe(document.documentElement, { attributes: true });
+     observer.observe(document.documentElement, { attributes: true });
 
-    // Cleanup observer on component unmount
-    return () => observer.disconnect();
+     return () => observer.disconnect();
   }, []);
   useEffect(() => {
     let scroll = null;
     let handleResize = () => {};
-    let handleScroll = () => {}; // Initialize Locomotive Scroll with optimized settings for smooth scrolling
+    let handleScroll = () => {};  
     if (scrollRef.current) {
       scroll = new LocomotiveScroll({
         el: scrollRef.current,
         smooth: true,
         smoothMobile: true,
-        multiplier: 0.8, // Reduced multiplier for smoother scrolling
-        lerp: 0.07, // Light damping effect for smoother transitions
-        reloadOnContextChange: true, // Reload on context/theme changes
-        inertia: 0.6, // Added inertia for smoother deceleration
-        getDirection: true, // Enable directional info for animations
-        resetNativeScroll: false, // Helps with cross-browser support
-        scrollFromAnywhere: true, // Enhances mobile scroll behavior
+        multiplier: 0.8,
+        lerp: 0.07,
+        reloadOnContextChange: true,
+        inertia: 0.6,
+        getDirection: true,
+        resetNativeScroll: false,
+        scrollFromAnywhere: true,
         scrollbarClass: "locomotive-scrollbar",
-        touchMultiplier: 2.5, // Improve touch device responsiveness
-        useKeyboard: true, // Enable keyboard navigation
+        touchMultiplier: 2.5,
+        useKeyboard: true,
         smartphone: {
           smooth: true,
           multiplier: 0.9,
@@ -66,27 +62,26 @@ const Home = () => {
         },
       });
 
-      // Store scroll instance globally for components to access
-      window.locomotive = scroll; // Update scrollbar position on window resize for smooth responsive behavior
+      
+      window.locomotive = scroll; 
       handleResize = () => {
         setTimeout(() => {
           scroll.update();
         }, 100);
       };
-      // Initial update to ensure all scroll animations are initialized
-      setTimeout(() => {
+       setTimeout(() => {
         scroll.update();
       }, 500);
-      // Force a second update after content has settled
-      setTimeout(() => {
+       setTimeout(() => {
         scroll.update();
       }, 1500);
-      // Add a final update after all content and images are likely loaded
-      setTimeout(() => {
+       setTimeout(() => {
+        scroll.update();
+      }, 1500);
+       setTimeout(() => {
         scroll.update();
 
-        // Force update for popular groups section specifically
-        const popularGroupsSection = document.getElementById(
+         const popularGroupsSection = document.getElementById(
           "popular-groups-section"
         );
         if (popularGroupsSection) {
@@ -109,8 +104,7 @@ const Home = () => {
       }, 3000);
 
       window.addEventListener("resize", handleResize);
-      // Handle scroll events to ensure sections are properly updated
-      handleScroll = () => {
+       handleScroll = () => {
         if (scroll) {
           scroll.update();
         }
@@ -119,8 +113,7 @@ const Home = () => {
       window.addEventListener("scroll", handleScroll);
     }
 
-    // Clean up the scroll instance when component unmounts
-    return () => {
+     return () => {
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("scroll", handleScroll);
       window.locomotive = null;
