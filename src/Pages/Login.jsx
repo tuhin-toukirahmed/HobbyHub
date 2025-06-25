@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useLocation } from "react-router";
 import { useAuth } from "../Provider/useAuth";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { toast } from "react-hot-toast";
@@ -10,6 +10,8 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { signIn, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -17,10 +19,11 @@ const Login = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();    try {
+    e.preventDefault();
+    try {
       await signIn(form.email, form.password);
       toast.success("Login successful!");
-      navigate("/");
+      navigate(from, { replace: true });
     } catch (err) {
       setError(err.message);
       toast.error(err.message);
@@ -85,7 +88,7 @@ const Login = () => {
             try {
               await signInWithGoogle();
               toast.success("Login with Google successful!");
-              navigate("/");
+              navigate(from, { replace: true });
             } catch (err) {
               setError(err.message);
               window.alert(err.message);

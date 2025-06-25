@@ -17,7 +17,7 @@ const Navbar = () => {
     // Add confirmation dialog
     const confirmed = window.confirm("Are you sure you want to log out?");
     if (!confirmed) return;
-    
+
     try {
       await logOut();
       // Replace alert with toast
@@ -82,7 +82,7 @@ const Navbar = () => {
               <li
                 className={
                   isActive("/")
-                    ? "font-bold text-blue-600 dark:text-blue-400"
+                    ? "font-bold text-blue-600  "
                     : ""
                 }
               >
@@ -91,7 +91,7 @@ const Navbar = () => {
               <li
                 className={
                   isActive("/dashboard")
-                    ? "font-bold text-blue-600 dark:text-blue-400"
+                    ? "font-bold text-blue-600  "
                     : ""
                 }
               >
@@ -100,7 +100,7 @@ const Navbar = () => {
               <li
                 className={
                   isActive("/all-groups")
-                    ? "font-bold text-blue-600 dark:text-blue-400"
+                    ? "font-bold text-blue-600  "
                     : ""
                 }
               >
@@ -109,7 +109,7 @@ const Navbar = () => {
               <li
                 className={
                   isActive("/profile")
-                    ? "font-bold text-blue-600 dark:text-blue-400"
+                    ? "font-bold text-blue-600  "
                     : ""
                 }
               >
@@ -118,7 +118,7 @@ const Navbar = () => {
               <li
                 className={
                   isActive("/settings")
-                    ? "font-bold text-blue-600 dark:text-blue-400"
+                    ? "font-bold text-blue-600  "
                     : ""
                 }
               >
@@ -128,7 +128,7 @@ const Navbar = () => {
                 <li>
                   <button
                     onClick={handleLogout}
-                    className="text-red-500 dark:text-red-400"
+                    className="text-red-500  "
                   >
                     Logout
                   </button>
@@ -137,7 +137,7 @@ const Navbar = () => {
                 <li
                   className={
                     isActive("/login")
-                      ? "font-bold text-blue-600 dark:text-blue-400"
+                      ? "font-bold text-blue-600  "
                       : ""
                   }
                 >
@@ -163,7 +163,7 @@ const Navbar = () => {
                 <rect x="14" y="1" width="7" height="6"></rect>
                 <rect x="14" y="11" width="7" height="12"></rect>
               </svg>
-              <h1 className="font-heading text-dark-text">HobbyHub</h1>
+              <h1 className="font-heading">HobbyHub</h1>
             </span>
           </Link>
         </div>
@@ -175,7 +175,7 @@ const Navbar = () => {
                 to="/"
                 className={
                   isActive("/")
-                    ? "font-bold text-blue-600 dark:text-blue-400 border-b-2 border-blue-500"
+                    ? "font-bold text-blue-600 border-b-2 border-blue-500"
                     : ""
                 }
               >
@@ -187,7 +187,7 @@ const Navbar = () => {
                 to="/dashboard"
                 className={
                   isActive("/dashboard")
-                    ? "font-bold text-blue-600 dark:text-blue-400 border-b-2 border-blue-500"
+                    ? "font-bold text-blue-600 border-b-2 border-blue-500"
                     : ""
                 }
               >
@@ -199,7 +199,7 @@ const Navbar = () => {
                 to="/all-groups"
                 className={
                   isActive("/all-groups")
-                    ? "font-bold text-blue-600 dark:text-blue-400 border-b-2 border-blue-500"
+                    ? "font-bold text-blue-600 border-b-2 border-blue-500"
                     : ""
                 }
               >
@@ -211,7 +211,7 @@ const Navbar = () => {
                 to="/profile"
                 className={
                   isActive("/profile")
-                    ? "font-bold text-blue-600 dark:text-blue-400 border-b-2 border-blue-500"
+                    ? "font-bold text-blue-600 border-b-2 border-blue-500"
                     : ""
                 }
               >
@@ -242,12 +242,12 @@ const Navbar = () => {
                 <Tooltip id="user-tooltip" place="bottom" />
                 <ul
                   tabIndex={0}
-                  className="menu menu-sm dropdown-content dark:bg-dark-bg light:bg-light-bg rounded-box z-1 mt-3 w-52 p-2 border shadow"
+                  className="menu menu-sm dropdown-content backdrop-blur-sm rounded-box z-1 mt-3 w-52 p-2 border shadow"
                 >
                   {user ? (
                     <>
-                      <li>
-                        <Link to="/settings">Settings & Accounts</Link>
+                      <li className={` ${isActive("/settings") ? "font-bold text-blue-600" : ""}`}>
+                        <Link to="/settings" className=" border-b-2 border-blue-500">Settings & Accounts</Link>
                       </li>
                       <li>
                         <button onClick={handleLogout}>Logout</button>
