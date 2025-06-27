@@ -96,7 +96,7 @@ const Allgroups = () => {
       });
   }, [page]);
 
-  if (loading) return <div className="text-center">Loading...</div>;
+  if (loading) return <div className="text-center min-h-screen mt-8">Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (

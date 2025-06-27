@@ -7,6 +7,9 @@ const PopularGroups = () => {
   const navigate = useNavigate();
   const [theme, setTheme] = useState('light');
 
+  // Use DataContext groups for popular groups
+  const popularGroups = Array.isArray(groups) ? groups.slice(0, 16) : [];
+
   useEffect(() => {
     // Get the current theme when component mounts
     const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
@@ -37,16 +40,16 @@ const PopularGroups = () => {
 
   // Update scroll when groups change
   useEffect(() => {
-    if (window.locomotive && groups.length > 0) {
+    if (window.locomotive && typeof window.locomotive.update === 'function' && groups.length > 0) {
       setTimeout(() => {
-        window.locomotive.update();
+        if (window.locomotive && typeof window.locomotive.update === 'function') {
+          window.locomotive.update();
+        }
       }, 200);
     }
   }, [groups]);
 
-  // Get only the first 8 groups
-  const popularGroups = groups.slice(0, 8);
-
+ 
   if (loading) return (
     <div className={`max-w-7xl mx-auto my-12 px-4 ${theme === 'light' ? 'bg-white' : 'bg-gray-900'}`}>
       <h2 className={`text-3xl font-bold mb-8 text-center ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Popular Groups</h2>
@@ -62,8 +65,19 @@ const PopularGroups = () => {
       <div className="text-center text-red-500">Error loading groups: {error}</div>
     </div>
   );
+
+  if (!loading && !error && popularGroups.length === 0) {
+    return (
+      <div className={`max-w-7xl mx-auto my-12 px-4 ${theme === 'light' ? 'bg-white' : 'bg-gray-900'}`}>
+        <h2 className={`text-3xl font-bold mb-8 text-center ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Popular Groups</h2>
+        <div className="text-center text-gray-500 py-8">No groups found.</div>
+      </div>
+    );
+  }
+
   return (
-    <div className={`max-w-7xl mx-auto my-12 px-4 ${theme === 'light' ? 'bg-white' : 'bg-gray-900'} transition-colors duration-300`}>      <h2 
+    <div className={`max-w-7xl mx-auto my-12 px-4 ${theme === 'light' ? 'bg-white' : 'bg-gray-900'} transition-colors duration-300`}>
+      <h2 
         className={`text-3xl md:text-5xl lg:text-6xl font-bold mb-8 text-center ${theme === 'light' ? 'text-gray-900' : 'text-white'} reveal`}
         data-scroll
         data-scroll-class="is-inview"
@@ -79,7 +93,7 @@ const PopularGroups = () => {
         data-scroll
       >
         {popularGroups.map((group, idx) => (
-          <div            key={group.groupName + idx}
+          <div key={group.groupName + idx}
             className={`${theme === 'light' ? 'bg-white' : 'bg-gray-800'} rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden cursor-pointer reveal`}
             onClick={() => navigate(`/group/${encodeURIComponent(group.groupName)}`)}
             data-scroll
@@ -121,10 +135,8 @@ const PopularGroups = () => {
           </div>
         ))}
       </div>
-        {/* View all groups button */}      <div 
-        className="text-center mt-10"
-        data-scroll
-      >
+      {/* View all groups button */}
+      <div className="text-center mt-10" data-scroll>
         <button 
           onClick={() => navigate('/all-groups')}
           className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 reveal-scale"

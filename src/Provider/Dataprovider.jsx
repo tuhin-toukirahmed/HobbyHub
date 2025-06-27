@@ -12,7 +12,7 @@ export const DataProvider = ({ children }) => {
         const response = await fetch("https://hobby-hub-server-site.vercel.app/allgroups");
         if (!response.ok) throw new Error("Failed to fetch groups");
         const data = await response.json();
-        setGroups(data);
+        setGroups(Array.isArray(data.groups) ? data.groups : []);
       } catch (err) {
         setError(err.message);
       } finally {

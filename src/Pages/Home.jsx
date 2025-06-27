@@ -66,46 +66,64 @@ const Home = () => {
       window.locomotive = scroll; 
       handleResize = () => {
         setTimeout(() => {
-          scroll.update();
+          if (scroll && typeof scroll.update === "function") {
+            scroll.update();
+          }
         }, 100);
       };
-       setTimeout(() => {
-        scroll.update();
+      setTimeout(() => {
+        if (scroll && typeof scroll.update === "function") {
+          scroll.update();
+        }
       }, 500);
-       setTimeout(() => {
-        scroll.update();
+      setTimeout(() => {
+        if (scroll && typeof scroll.update === "function") {
+          scroll.update();
+        }
       }, 1500);
-       setTimeout(() => {
-        scroll.update();
+      setTimeout(() => {
+        if (scroll && typeof scroll.update === "function") {
+          scroll.update();
+        }
       }, 1500);
-       setTimeout(() => {
-        scroll.update();
+      setTimeout(() => {
+        if (scroll && typeof scroll.update === "function") {
+          scroll.update();
+        }
 
-         const popularGroupsSection = document.getElementById(
+        const popularGroupsSection = document.getElementById(
           "popular-groups-section"
         );
-        if (popularGroupsSection) {
+        if (popularGroupsSection && scroll && typeof scroll.scrollTo === "function") {
           scroll.scrollTo(popularGroupsSection, {
             offset: -50,
             duration: 0,
             disableLerp: true,
-            callback: () => scroll.update(),
+            callback: () => {
+              if (scroll && typeof scroll.update === "function") {
+                scroll.update();
+              }
+            },
           });
-          scroll.update();
+          if (scroll && typeof scroll.update === "function") {
+            scroll.update();
+          }
         }
 
         // Force update for reviews section
         const reviewsSection = document.getElementById("reviews-section");
         if (reviewsSection) {
           setTimeout(() => {
-            scroll.update();
+            if (scroll && typeof scroll.update === "function") {
+              scroll.update();
+            }
           }, 200);
         }
       }, 3000);
 
       window.addEventListener("resize", handleResize);
-       handleScroll = () => {
-        if (scroll) {
+      handleScroll = () => {
+        if (scroll && typeof scroll.update === "function") {
           scroll.update();
         }
       };
