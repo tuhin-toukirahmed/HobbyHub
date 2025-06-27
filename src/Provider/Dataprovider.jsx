@@ -9,7 +9,7 @@ export const DataProvider = ({ children }) => {
   useEffect(() => {
     const fetchGroups = async () => {
       try {
-        const response = await fetch("/allGroups.json");
+        const response = await fetch("https://hobby-hub-server-site.vercel.app/allgroups");
         if (!response.ok) throw new Error("Failed to fetch groups");
         const data = await response.json();
         setGroups(data);

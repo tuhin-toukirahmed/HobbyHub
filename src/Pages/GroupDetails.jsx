@@ -127,8 +127,7 @@ const GroupDetails = () => {
   const cancelPolicy = "No refunds after the class starts";
   const minAge = 18;
 
-  // Date availability badge logic
-  let isAvailable = true;
+   let isAvailable = true;
   if (group.startDate) {
     const today = new Date();
     const groupDate = new Date(group.startDate);
