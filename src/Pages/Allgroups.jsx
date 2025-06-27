@@ -132,9 +132,7 @@ const Allgroups = () => {
           </h1>
         </div>
         <div>
-          <p className="text-gray-600 mb-4">
-            Explore our diverse groups and find the perfect community for your hobby.
-          </p>
+           
         </div>
       </div>
       <div className="flex gap-3 mb-8 flex-wrap"></div>
