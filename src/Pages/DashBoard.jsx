@@ -278,7 +278,7 @@ const JoinedGroupsCardGrid = () => {
     <div
       key={group._id || group.groupName + idx}
       className="bg-white   rounded-xl shadow p-4 flex flex-col items-start hover:shadow-lg transition cursor-pointer"
-      onClick={() => navigate(`/group/${encodeURIComponent(group.groupName)}`)}
+      onClick={() => navigate(`/joined-group-details/${group._id}`)}
     >
       <img
         src={

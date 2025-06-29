@@ -1,22 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import LocomotiveScroll from "locomotive-scroll";
 import { useAuth } from "../Provider/useAuth";
 import { toast } from "react-hot-toast";
 import Swal from "sweetalert2";
 
-const GroupDetails = () => {
-  const { _id } = useParams();
+const JoinedGroupDetails = () => {
+  const { joinedGroupId } = useParams();
+  const navigate = useNavigate();
   const [group, setGroup] = useState(null);
   const [loading, setLoading] = useState(true);
   const scrollRef = useRef(null);
   const revealRefs = useRef([]);
   const { user } = useAuth();
   const email = user?.email || "";
-  const [joining, setJoining] = useState(false);
-  const [joinSuccess, setJoinSuccess] = useState("");
-  const [joinError, setJoinError] = useState("");
-  const [alreadyJoined, setAlreadyJoined] = useState(false);
+  const [removing, setRemoving] = useState(false);
+  const [removeSuccess, setRemoveSuccess] = useState("");
+  const [removeError, setRemoveError] = useState("");
 
   useEffect(() => {
     let scroll = null;
@@ -35,154 +35,104 @@ const GroupDetails = () => {
     };
   }, []);
 
-  // Only fetch if groupId is defined and not empty
+  // Fetch joined group details
   useEffect(() => {
-    if (!_id) return;
+    if (!joinedGroupId || !email) return;
+    
+    
+    
     setLoading(true);
-    fetch(`https://hobby-hub-server-site.vercel.app/allgroups/details/${_id}`)
+    const apiUrl = `https://hobby-hub-server-site.vercel.app/joined-groups/details/${joinedGroupId}/${encodeURIComponent(email)}`;
+     
+    fetch(apiUrl)
       .then(async (res) => {
-        if (!res.ok) {
-          // Try to get error message from backend
-          let errMsg = 'Failed to fetch group';
+         if (!res.ok) {
+          let errMsg = 'Failed to fetch joined group details';
           try {
             const errData = await res.json();
-            if (errData && errData.message) errMsg = errData.message;
-          } catch {}
+             if (errData && errData.message) errMsg = errData.message;
+          } catch (e) {
+           }
           throw new Error(errMsg);
         }
         return res.json();
       })
       .then((data) => {
-        // If data is null/undefined or missing _id, treat as not found
-        if (!data || (!data._id && !data.groupName)) {
-          setGroup(null);
+         if (!data || !data.groupName) {
+           setGroup(null);
         } else {
-          setGroup(data);
+           setGroup(data);
         }
         setLoading(false);
       })
-      .catch(() => {
-        setGroup(null);
+      .catch((error) => {
+         setGroup(null);
         setLoading(false);
       });
-  }, [_id]);
+  }, [joinedGroupId, email]);
 
-  useEffect(() => {
-    const checkJoined = async () => {
-      if (!email || !group?.groupName) return;
-      try {
-        const res = await fetch(
-          `https://hobby-hub-server-site.vercel.app/joined-groups/${encodeURIComponent(
-            email
-          )}`
-        );
-        if (!res.ok) return;
-        const data = await res.json();
-        if (
-          Array.isArray(data) &&
-          data.some((g) => g.groupName === group.groupName)
-        ) {
-          setAlreadyJoined(true);
-        } else {
-          setAlreadyJoined(false);
-        }
-      } catch {
-       }
-    };
-    checkJoined();
-  }, [email, group?.groupName, joinSuccess]);
-
-  const handleJoinGroup = async () => {
-    setJoinSuccess("");
-    setJoinError("");
-    if (!email) {
-      toast.error("You must be logged in to join a group.");
-      return;
-    }
+  const handleRemoveGroup = async () => {
+    if (!email || !group?.groupName) return;
     
     // Use SweetAlert2 for confirmation
     const result = await Swal.fire({
-      title: "Join Group",
-      text: `Are you sure you want to join '${group.groupName}'?`,
-      icon: "question",
+      title: "Are you sure?",
+      text: `Do you want to remove '${group.groupName}' from your joined groups?`,
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3b82f6",
+      confirmButtonColor: "#ef4444",
       cancelButtonColor: "#6b7280",
-      confirmButtonText: "Yes, join it!",
+      confirmButtonText: "Yes, remove it!",
       cancelButtonText: "Cancel"
     });
 
     if (!result.isConfirmed) return;
 
-    setJoining(true);
+    setRemoving(true);
+    setRemoveError("");
+    setRemoveSuccess("");
     try {
-      const joinedGroupData = {
-        ...group,
-        originalGroupId: group._id, // Keep reference to original group
-        email: email, // User who joined
-        joinedAt: new Date(),
-        _id: undefined // Let MongoDB generate new _id for joined group record
-      };
       const res = await fetch(
-        "https://hobby-hub-server-site.vercel.app/joined-groups",
+        `https://hobby-hub-server-site.vercel.app/joined-groups/${joinedGroupId}/${email}`,
         {
-          method: "POST",
+          method: "DELETE",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(joinedGroupData),
         }
       );
-      if (!res.ok) throw new Error("Failed to join group");
-      setJoinSuccess("Successfully joined the group!");
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.message || "Failed to remove group");
+      }
+      setRemoveSuccess("Group removed from your joined groups.");
       
       // Show success alert
       await Swal.fire({
-        title: "Joined!",
-        text: "You have successfully joined the group.",
+        title: "Removed!",
+        text: "Group has been removed from your joined groups.",
         icon: "success",
-        timer: 2000,
+        timer: 1500,
         showConfirmButton: false
       });
+      
+      // Navigate to dashboard after successful removal
+      navigate("/dashboard");
     } catch (err) {
-      setJoinError(err.message || "Failed to join group");
+      setRemoveError(err.message || "Failed to remove group");
       
       // Show error alert
       Swal.fire({
         title: "Error!",
-        text: err.message || "Failed to join group",
+        text: err.message || "Failed to remove group",
         icon: "error",
         confirmButtonColor: "#ef4444"
       });
     } finally {
-      setJoining(false);
+      setRemoving(false);
     }
   };
 
-  if (loading) 
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center ">
-        <div className="text-center">
-          <div className="relative">
-            <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin mx-auto mb-4"></div>
-          </div>
-          <h2 className="text-2xl font-semibold text-gray-700 mb-2">Loading Group Details</h2>
-          <p className="text-gray-500">Getting all the information about this group...</p>
-        </div>
-      </div>
-    );
-  if (!group) 
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center ">
-        <div className="text-center">
-          <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
-          </div>
-          <h2 className="text-2xl font-semibold text-gray-700 mb-2">Group Not Found</h2>
-          <p className="text-gray-500">Sorry, we couldn't find the group you're looking for.</p>
-        </div>
-      </div>
-    );
+  if (loading) return <div className="p-8 text-center">Loading...</div>;
+  if (!group) return <div className="p-8 text-center">Joined group not found.</div>;
 
   const host = group.host || "Unknown";
   const orientationFee = group.orientationFee || 0;
@@ -191,6 +141,7 @@ const GroupDetails = () => {
   const startDate = group.startDate || "Date not specified";
   const weeks = group.weeks || 1;
   const members = group.members || 1;
+  const joinedAt = group.joinedAt ? new Date(group.joinedAt).toLocaleDateString() : "Unknown";
   const refundPolicy = "Full refund up to 48 hours before the class";
   const cancelPolicy = "No refunds after the class starts";
   const minAge = 18;
@@ -219,6 +170,9 @@ const GroupDetails = () => {
         </h1>
         <div className="text-gray-500 mb-4">
           Hosted by: {host}, {weeks} weeks, {members} members
+        </div>
+        <div className="text-green-600 mb-4 font-semibold">
+          ✅ You joined this group on {joinedAt}
         </div>
       </div>
       <div className="mb-6">
@@ -287,46 +241,27 @@ const GroupDetails = () => {
           </div>
         </div>
       </div>
-      {isAvailable && (
-        <>
-          {alreadyJoined ? (
-            <button
-              className="w-full bg-gray-400 text-white font-bold py-3 rounded text-lg cursor-not-allowed"
-              disabled
-            >
-              Already Joined ✓
-            </button>
-          ) : (
-            <button
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded text-lg transition"
-              onClick={handleJoinGroup}
-              disabled={joining}
-            >
-              {joining ? "Joining..." : `Join group - $${orientationFee}`}
-            </button>
-          )}
-          {joinSuccess && (
-            <div className="text-green-600 mt-2 dark:text-green-400">
-              {joinSuccess}
-            </div>
-          )}
-          {joinError && (
-            <div className="text-red-500 mt-2 dark:text-red-400">
-              {joinError}
-            </div>
-          )}
-        </>
+      
+      <button
+        className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded text-lg transition"
+        onClick={handleRemoveGroup}
+        disabled={removing}
+      >
+        {removing ? "Removing..." : "Remove from joined groups"}
+      </button>
+      
+      {removeSuccess && (
+        <div className="text-green-600 mt-2 dark:text-green-400">
+          {removeSuccess}
+        </div>
       )}
-      {!isAvailable && (
-        <button
-          className="w-full bg-gray-300 text-gray-500 font-bold py-3 rounded text-lg cursor-not-allowed"
-          disabled
-        >
-          Not available
-        </button>
+      {removeError && (
+        <div className="text-red-500 mt-2 dark:text-red-400">
+          {removeError}
+        </div>
       )}
     </div>
   );
 };
 
-export default GroupDetails;
+export default JoinedGroupDetails;

@@ -15,10 +15,29 @@ const Allgroups = () => {
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [category, setCategory] = useState("");
   const navigate = useNavigate();
   const scrollRef = useRef(null);
   const cardRefs = useRef([]);
   const h1Ref = useRef(null);
+
+  const categories = [
+    "Photography",
+    "Cooking",
+    "Painting",
+    "Cycling",
+    "Gardening",
+    "Music",
+    "Coding",
+    "Traveling",
+    "Reading",
+    "Writing",
+    "Hiking",
+    "Dancing",
+    "Yoga",
+    "Chess",
+    "Pottery",
+  ];
 
   useEffect(() => {
     let scroll = null;
@@ -33,8 +52,7 @@ const Allgroups = () => {
         try {
           scroll.destroy();
         } catch {
-          /* ignore */
-        }
+         }
       }
     };
   }, []);
@@ -78,15 +96,25 @@ const Allgroups = () => {
     }
   }, [groups]);
 
+  // Reset page to 1 when category changes
+  useEffect(() => {
+    setPage(1);
+  }, [category]);
+
   useEffect(() => {
     setLoading(true);
     setError(null);
-    fetch(
-      `https://hobby-hub-server-site.vercel.app/allgroups?page=${page}&limit=${GROUPS_PER_PAGE}`
-    )
+    let url = `https://hobby-hub-server-site.vercel.app/allgroups`;
+     if (category) {
+      url += `?category=${encodeURIComponent(category)}`;
+    } else {
+      url += `?page=${page}&limit=${GROUPS_PER_PAGE}`;
+    }
+    fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        setGroups(data.groups || []);
+        let filtered = data.groups || [];
+        setGroups(filtered);
         setTotalPages(data.totalPages || 1);
         setLoading(false);
       })
@@ -94,9 +122,20 @@ const Allgroups = () => {
         setError(err.message || "Failed to fetch groups");
         setLoading(false);
       });
-  }, [page]);
+  }, [page, category]);
 
-  if (loading) return <div className="text-center min-h-screen mt-8">Loading...</div>;
+  if (loading)
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center ">
+        <div className="text-center">
+          <div className="relative">
+            <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin mx-auto mb-4"></div>
+          </div>
+          <h2 className="text-2xl font-semibold text-gray-700 mb-2">Loading Groups</h2>
+          <p className="text-gray-500">Finding amazing hobby groups for you...</p>
+        </div>
+      </div>
+    );
   if (error) return <div>Error: {error}</div>;
 
   return (
@@ -105,22 +144,13 @@ const Allgroups = () => {
       data-scroll-container
       className="sm:max-w-xl md:max-w-full lg:max-w-screen-xl mx-auto mt-20"
     >
-      <div>
-        <div>
+      <div className="px-4 sm:px-6 lg:px-8 mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="flex-1">
           <h1 ref={h1Ref} className="text-3xl font-bold mb-6">
-            Find a Group for{" "}
-            <span style={{ color: "#10b981" }}>
+            Find a Group for{" "} <br className="block lg:hidden"/>
+            <span style={{ color: "#10b981" }} className="">
               <Typewriter
-                words={[
-                  "Photography",
-                  "Cooking",
-                  "Painting",
-                  "Cycling",
-                  "Gardening",
-                  "Music",
-                  "Coding",
-                  "Traveling",
-                ]}
+                words={categories}
                 loop={0}
                 cursor
                 cursorStyle="|"
@@ -131,9 +161,22 @@ const Allgroups = () => {
             </span>
           </h1>
         </div>
-        <div>
-           
+        <div className="w-full md:w-54 ">
+          <select
+            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            aria-label="Filter by category"
+          >
+            <option value="" className="text-gray-800">All Categories</option>
+            {categories.map((cat) => (
+              <option key={cat} value={cat} className="text-gray-800">
+                {cat}
+              </option>
+            ))}
+          </select>
         </div>
+        <div></div>
       </div>
       <div className="flex gap-3 mb-8 flex-wrap"></div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6">
@@ -142,7 +185,7 @@ const Allgroups = () => {
             key={group.groupName + idx}
             ref={(el) => (cardRefs.current[idx] = el)}
             className="bg-white rounded-xl shadow p-4 flex flex-col items-start hover:shadow-lg transition cursor-pointer"
-            onClick={() => navigate(`/group/${group.groupName}`)}
+            onClick={() => navigate(`/group/${group._id}`)}
           >
             <img
               src={
@@ -162,7 +205,7 @@ const Allgroups = () => {
         ))}
       </div>
       {/* Pagination Controls */}
-      {totalPages > 1 && (
+      {!category && totalPages > 1 && (
         <div className="flex justify-center mt-8 gap-2">
           <button
             className="px-4 py-2 rounded bg-gray-200 text-black font-semibold hover:bg-gray-300 transition disabled:opacity-50 disabled:cursor-not-allowed"

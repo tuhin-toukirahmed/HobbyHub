@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router";
 import { useAuth } from "../Provider/useAuth";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { toast } from "react-hot-toast";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -91,7 +92,12 @@ const Login = () => {
               navigate(from, { replace: true });
             } catch (err) {
               setError(err.message);
-              window.alert(err.message);
+              Swal.fire({
+                title: 'Login Error',
+                text: err.message,
+                icon: 'error',
+                confirmButtonColor: '#dc2626'
+              });
             }
           }}
         >

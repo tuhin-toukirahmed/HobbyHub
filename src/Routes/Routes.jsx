@@ -13,6 +13,7 @@ import SignUp from "../Pages/SignUp";
 import Login from "../Pages/Login";
 import GroupDetails from "../Pages/GroupDetails";
 import MyGroupDetails from "../Pages/MyGroupDetails";
+import JoinedGroupDetails from "../Pages/JoinedGroupDetails";
 import ProtectedRoute from "../Components/ProtectedRoute";
 
 const router = createBrowserRouter([
@@ -61,8 +62,12 @@ const router = createBrowserRouter([
         element: <SignUp />,
       },
       {
-        path: "/group/:groupName",
+        path: "/group/:_id",
         element:<ProtectedRoute><GroupDetails /></ProtectedRoute>,
+      },
+      {
+        path: "/joined-group-details/:joinedGroupId",
+        element: <ProtectedRoute><JoinedGroupDetails /></ProtectedRoute>,
       },
          {
         path: "/my-group-details/:groupId",

@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { useAuth } from "../Provider/useAuth";
 import { Tooltip } from "react-tooltip";
-import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
   const { logOut, user } = useAuth();
@@ -14,15 +14,39 @@ const Navbar = () => {
   };
 
   const handleLogout = async () => {
-     const confirmed = window.confirm("Are you sure you want to log out?");
-    if (!confirmed) return;
+    const result = await Swal.fire({
+      title: "Logout",
+      text: "Are you sure you want to log out?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#059669",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Yes, logout",
+      cancelButtonText: "Cancel",
+    });
 
-    try {
-      await logOut();
-       toast.success("Logged out successfully!");
-       navigate("/");
-    } catch (err) {
-      toast.error("Logout failed: " + (err.message || "Unknown error"));
+    if (result.isConfirmed) {
+      try {
+        await logOut();
+
+        await Swal.fire({
+          title: "Success!",
+          text: "You have been logged out successfully.",
+          icon: "success",
+          confirmButtonColor: "#059669",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+
+        navigate("/");
+      } catch (err) {
+        Swal.fire({
+          title: "Error!",
+          text: "Logout failed: " + (err.message || "Unknown error"),
+          icon: "error",
+          confirmButtonColor: "#dc2626",
+        });
+      }
     }
   };
 
@@ -49,14 +73,14 @@ const Navbar = () => {
       {" "}
       <div
         ref={navbarRef}
-        className={`navbar bg-light-bg sm:max-w-xl md:max-w-full lg:max-w-screen-xl mx-auto fixed left-1/2 top-0 z-50 transform -translate-x-1/2 w-full max-w-4xl transition-transform duration-300 backdrop-blur-xs rounded-xl ${
+        className={`navbar bg-light-bg sm:max-w-xl md:max-w-full lg:max-w-screen-xl mx-auto fixed left-1/2 top-0 z-50 transform -translate-x-1/2 w-full max-w-4xl transition-transform duration-300  glass rounded-xl ${
           visible ? "translate-y-0" : "-translate-y-full"
         } `}
       >
         {" "}
         <div className="navbar-start">
           <div className="dropdown">
-            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden ">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
@@ -76,66 +100,51 @@ const Navbar = () => {
               tabIndex={0}
               className="menu menu-sm dropdown-content dark:bg-dark-bg light:bg-light-bg rounded-box z-1 mt-3 w-52 p-2 border shadow"
             >
-              <li
-                className={
-                  isActive("/")
-                    ? "font-bold text-blue-600  "
-                    : ""
-                }
-              >
+              <li className={isActive("/") ? "font-bold text-blue-600  " : ""}>
                 <Link to="/">Home</Link>
               </li>
               <li
                 className={
-                  isActive("/dashboard")
-                    ? "font-bold text-blue-600  "
-                    : ""
+                  isActive("/dashboard") ? "font-bold text-blue-600  " : ""
                 }
               >
                 <Link to="/dashboard">Dashboard</Link>
               </li>
               <li
                 className={
-                  isActive("/all-groups")
-                    ? "font-bold text-blue-600  "
-                    : ""
+                  isActive("/all-groups") ? "font-bold text-blue-600  " : ""
                 }
               >
                 <Link to="/all-groups">Groups</Link>
               </li>{" "}
-              <li
-                className={
-                  isActive("/profile")
-                    ? "font-bold text-blue-600  "
-                    : ""
-                }
-              >
-                <Link to="/profile">Profile</Link>
-              </li>
-              <li
-                className={
-                  isActive("/settings")
-                    ? "font-bold text-blue-600  "
-                    : ""
-                }
-              >
-                <Link to="/settings">Settings</Link>
-              </li>
+              {user && (
+                <li
+                  className={
+                    isActive("/profile") ? "font-bold text-blue-600  " : ""
+                  }
+                >
+                  <Link to="/profile">Profile</Link>
+                </li>
+              )}
+              {user && (
+                <li
+                  className={
+                    isActive("/settings") ? "font-bold text-blue-600  " : ""
+                  }
+                >
+                  <Link to="/settings">Settings</Link>
+                </li>
+              )}
               {user ? (
                 <li>
-                  <button
-                    onClick={handleLogout}
-                    className="text-red-500  "
-                  >
+                  <button onClick={handleLogout} className="text-red-500  ">
                     Logout
                   </button>
                 </li>
               ) : (
                 <li
                   className={
-                    isActive("/login")
-                      ? "font-bold text-blue-600  "
-                      : ""
+                    isActive("/login") ? "font-bold text-blue-600  " : ""
                   }
                 >
                   <Link to="/login">Login</Link>
@@ -203,18 +212,20 @@ const Navbar = () => {
                 Groups
               </Link>
             </li>
-            <li>
-              <Link
-                to="/profile"
-                className={
-                  isActive("/profile")
-                    ? "font-bold text-blue-600 border-b-2 border-blue-500"
-                    : ""
-                }
-              >
-                Profile
-              </Link>
-            </li>{" "}
+            {user && (
+              <li>
+                <Link
+                  to="/profile"
+                  className={
+                    isActive("/profile")
+                      ? "font-bold text-blue-600 border-b-2 border-blue-500"
+                      : ""
+                  }
+                >
+                  Profile
+                </Link>
+              </li>
+            )}{" "}
             <li>
               <div className="dropdown dropdown-end">
                 <div
@@ -239,12 +250,21 @@ const Navbar = () => {
                 <Tooltip id="user-tooltip" place="bottom" />
                 <ul
                   tabIndex={0}
-                  className="menu menu-sm dropdown-content backdrop-blur-sm rounded-box z-1 mt-3 w-52 p-2 border shadow"
+                  className="menu menu-sm dropdown-content backdrop-blur-sm rounded-box z-1 mt-3 w-52 p-2 border shadow glass"
                 >
                   {user ? (
                     <>
                       <li className="border-b-1 border-gray-300 py-1">
-                        <Link to="/settings" className={` ${isActive("/settings") ? "font-bold text-blue-600 border-b-2 border-blue-500" : ""}`} >Settings & Accounts</Link>
+                        <Link
+                          to="/settings"
+                          className={` ${
+                            isActive("/settings")
+                              ? "font-bold text-blue-600 border-b-2 border-blue-500"
+                              : ""
+                          }`}
+                        >
+                          Settings & Accounts
+                        </Link>
                       </li>
                       <li>
                         <button onClick={handleLogout}>Logout</button>

@@ -4,6 +4,7 @@ import LocomotiveScroll from "locomotive-scroll";
 import { useAuth } from "../Provider/useAuth";
 import { DataContext } from "../Provider/DataContext";
 import { toast } from "react-hot-toast";
+import Swal from "sweetalert2";
 
 const MyGroupDetails = () => {
   const { groupId } = useParams();
@@ -66,7 +67,19 @@ const MyGroupDetails = () => {
       toast.error('User email not found.');
       return;
     }
-    if (window.confirm('Are you sure you want to delete this group?')) {
+
+    const result = await Swal.fire({
+      title: 'Delete Group',
+      text: 'Are you sure you want to delete this group? This action cannot be undone.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#dc2626',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel'
+    });
+
+    if (result.isConfirmed) {
       try {
         const groupIdToDelete = group._id || group.id || group.groupId;
         const res = await fetch(`https://hobby-hub-server-site.vercel.app/mygroups/${encodeURIComponent(groupIdToDelete)}/${encodeURIComponent(email)}`, {
@@ -74,13 +87,30 @@ const MyGroupDetails = () => {
         });
         if (!res.ok) {
           const errorText = await res.text();
-          toast.error(`Failed to delete group: ${errorText}`);
+          Swal.fire({
+            title: 'Error!',
+            text: `Failed to delete group: ${errorText}`,
+            icon: 'error',
+            confirmButtonColor: '#dc2626'
+          });
           return;
         }
-        toast.success('Group deleted successfully!');
+        
+        await Swal.fire({
+          title: 'Deleted!',
+          text: 'Your group has been deleted successfully.',
+          icon: 'success',
+          confirmButtonColor: '#059669'
+        });
+        
         window.location.href = '/my-groups';
       } catch (err) {
-        toast.error('Delete error: ' + err.message);
+        Swal.fire({
+          title: 'Error!',
+          text: 'Delete error: ' + err.message,
+          icon: 'error',
+          confirmButtonColor: '#dc2626'
+        });
       }
     }
   };
